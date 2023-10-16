@@ -38,6 +38,7 @@ public class CarController : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        FindObjectOfType<AudioController>().Play("Idle");
     }
 
     // Finds the corresponding visual wheel
