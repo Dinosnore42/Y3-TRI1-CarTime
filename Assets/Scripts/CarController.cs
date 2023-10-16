@@ -27,6 +27,7 @@ public class CarController : MonoBehaviour
     public float totalForwardSlip; // Total forward slip of all wheels
     public bool automaticGears = true;
     public bool tractionControl = true;
+    public float braking;
 
     // Car wheels
     [SerializeField] private WheelCollider fl;
@@ -72,6 +73,7 @@ public class CarController : MonoBehaviour
             curGear--;
         }
 
+        #region Toggles
         // Toggle automatic gears
         if (Input.GetKeyDown("z"))
         {
@@ -97,6 +99,7 @@ public class CarController : MonoBehaviour
                 tractionControl = true;
             }
         }
+        #endregion
     }
 
     // Applies motion to the wheels
@@ -115,7 +118,7 @@ public class CarController : MonoBehaviour
         totalForwardSlip = 0;
 
         float motorPower = 0;
-        float braking = 0f;
+        braking = 0f;
         #endregion
 
         // If input direction and velocity direction match...
@@ -214,7 +217,7 @@ public class CarController : MonoBehaviour
 
                 // Traction Control
                 // If the total slip value exceeds the threshold, and the car is not braking, then motor power is zero
-                if (tractionControl == true && (totalForwardSlip >= 1f || totalForwardSlip <= -1) && engineRPM != 0)
+                if (tractionControl == true && (totalForwardSlip >= 1f || totalForwardSlip <= -1) && braking == 0)
                 {
                     motorPower = 0;
                 }
@@ -224,16 +227,26 @@ public class CarController : MonoBehaviour
             }
             #endregion
 
-            // Apply braking torque (60 front/40 back braking ratio)
-            axleInfo.leftWheel.brakeTorque = braking * 0.6f;
-            axleInfo.rightWheel.brakeTorque = braking * 0.4f;
+            #region Apply braking torque
+            if (braking != 0 && (totalForwardSlip >= 1f || totalForwardSlip <= -1f))
+            {
+                axleInfo.leftWheel.brakeTorque = 0;
+                axleInfo.rightWheel.brakeTorque = 0;
+            }
+            else
+            {
+                axleInfo.leftWheel.brakeTorque = braking;
+                axleInfo.rightWheel.brakeTorque = braking;
+            }
+            #endregion
 
+            // Update the visual wheels
             ApplyLocalPositionToVisuals(axleInfo.leftWheel);
             ApplyLocalPositionToVisuals(axleInfo.rightWheel);
         }
 
+        // Engine RPM
         float driveshaftRPM = totalWheelRPM / driveWheelNum; // driveshaft rpm = average wheel RPM
         engineRPM = driveshaftRPM * stepper * gearVal;
-
     }
 }

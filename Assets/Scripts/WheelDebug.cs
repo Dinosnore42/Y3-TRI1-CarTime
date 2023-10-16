@@ -21,41 +21,46 @@ public class WheelDebug : MonoBehaviour
     private void OnGUI()
     {
         // Background box
-        GUI.Box(new Rect(80, 0, 300, 260), "");
+        GUI.Box(new Rect(80, 0, 300, 270), "");
 
         // Wheel data
         WheelDebugUI(fl, 0, -2);
         WheelDebugUI(fr, 1, -2);
-        WheelDebugUI(bl, 0, -1);
-        WheelDebugUI(br, 1, -1);
+        WheelDebugUI(bl, 0, -0.9f);
+        WheelDebugUI(br, 1, -0.9f);
 
         // RPM and gear info
-        GUI.Label(new Rect(90, 90, 50, 50), ("Engine RPM: " + ((int)Mathf.Round(thisCar.engineRPM)).ToString()));
-        GUI.Label(new Rect(150, 90, 50, 50), ("Gear: " + thisCar.curGear.ToString()));
-        GUI.Label(new Rect(210, 90, 50, 50), ("Gear Ratio: " + thisCar.gearVal.ToString() + ":1"));
-        GUI.Label(new Rect(270, 90, 50, 50), ("Speed: " + ((int)Mathf.Round(thisRb.velocity.magnitude * 2.237f)).ToString() + "mph"));
+        GUI.Label(new Rect(90, 105, 50, 50), ("Engine RPM: " + ((int)Mathf.Round(thisCar.engineRPM)).ToString()));
+        GUI.Label(new Rect(150, 105, 50, 50), ("Gear: " + thisCar.curGear.ToString()));
+        GUI.Label(new Rect(210, 105, 50, 50), ("Gear Ratio: " + thisCar.gearVal.ToString() + ":1"));
+        GUI.Label(new Rect(270, 105, 50, 50), ("Speed: " + ((int)Mathf.Round(thisRb.velocity.magnitude * 2.237f)).ToString() + "mph"));
 
-        if (thisCar.tractionControl == true && (thisCar.totalForwardSlip >= 1f || thisCar.totalForwardSlip <= -1) && thisCar.engineRPM != 0)
+        if (thisCar.tractionControl == true && (thisCar.totalForwardSlip >= 1f || thisCar.totalForwardSlip <= -1) && thisCar.braking == 0)
         {
             GUI.Label(new Rect(150, 70, 200, 50), ("TRACTION CONTROL ON"));
         }
 
+        if (thisCar.braking > 0 && (thisCar.totalForwardSlip >= 1f || thisCar.totalForwardSlip <= -1f))
+        {
+            GUI.Label(new Rect(150, 85, 200, 50), ("ANTI-LOCK BRAKING ON"));
+        }
+
         if (thisCar.automaticGears == true)
         {
-            GUI.Label(new Rect(90, 215, 200, 50), ("Z: turn off automatic gears"));
+            GUI.Label(new Rect(90, 230, 200, 50), ("Z: turn off automatic gears"));
         }
         else
         {
-            GUI.Label(new Rect(90, 215, 200, 50), ("Z: turn on automatic gears"));
+            GUI.Label(new Rect(90, 230, 200, 50), ("Z: turn on automatic gears"));
         }
 
         if (thisCar.tractionControl == true)
         {
-            GUI.Label(new Rect(90, 230, 200, 50), ("X: turn off traction control"));
+            GUI.Label(new Rect(90, 245, 200, 50), ("X: turn off traction control"));
         }
         else
         {
-            GUI.Label(new Rect(90, 230, 200, 50), ("X: turn on traction control"));
+            GUI.Label(new Rect(90, 245, 200, 50), ("X: turn on traction control"));
         }
     }
 
