@@ -35,7 +35,7 @@ public class WheelDebug : MonoBehaviour
         GUI.Label(new Rect(210, 90, 50, 50), ("Gear Ratio: " + thisCar.gearVal.ToString() + ":1"));
         GUI.Label(new Rect(270, 90, 50, 50), ("Speed: " + ((int)Mathf.Round(thisRb.velocity.magnitude * 2.237f)).ToString() + "mph"));
 
-        if (thisCar.tractionControl == true && (thisCar.totalWheelRPM / 2 - thisCar.freeWheelRPM / 2 > 250 || thisCar.freeWheelRPM / 2 - thisCar.totalWheelRPM / 2 > 250))
+        if (thisCar.tractionControl == true && (thisCar.totalForwardSlip >= 1f || thisCar.totalForwardSlip <= -1) && thisCar.engineRPM != 0)
         {
             GUI.Label(new Rect(150, 70, 200, 50), ("TRACTION CONTROL ON"));
         }

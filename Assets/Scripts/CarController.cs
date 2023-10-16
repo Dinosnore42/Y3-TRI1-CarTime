@@ -18,14 +18,21 @@ public class CarController : MonoBehaviour
     public float maxMotorTorque; // Maximum torque the motor can apply to wheel
     public float maxSteeringAngle; // Maximum steer angle the wheel can have
     public float engineRPM; // Last RPM of the car
-    public List<float> gears;
+    public List<float> gears; // List of gear RPMs
     public int curGear = 1;
     public float gearVal;
     private Rigidbody rb;
     public float totalWheelRPM; // Total RPM of drive wheels
     public float freeWheelRPM; // Total RPM of non-driving wheels
+    public float totalForwardSlip; // Total forward slip of all wheels
     public bool automaticGears = true;
     public bool tractionControl = true;
+
+    // Car wheels
+    [SerializeField] private WheelCollider fl;
+    [SerializeField] private WheelCollider fr;
+    [SerializeField] private WheelCollider bl;
+    [SerializeField] private WheelCollider br;
 
     private void Awake()
     {
@@ -95,6 +102,7 @@ public class CarController : MonoBehaviour
     // Applies motion to the wheels
     public void FixedUpdate()
     {
+        #region Variable Values
         float stepper = 4f; // Stepping up gear between gearbox and driveshaft
         gearVal = gears[curGear]; // Sets gear ratio to that of current gear value
         
@@ -104,9 +112,11 @@ public class CarController : MonoBehaviour
 
         totalWheelRPM = 0;
         freeWheelRPM = 0;
+        totalForwardSlip = 0;
 
         float motorPower = 0;
         float braking = 0f;
+        #endregion
 
         // If input direction and velocity direction match...
         if ((forwardVelocity >= 0 && Input.GetAxis("Vertical") > 0) || (forwardVelocity <= 0 && Input.GetAxis("Vertical") < 0))
@@ -114,7 +124,7 @@ public class CarController : MonoBehaviour
             // ...Motor power becomes input intensity up to maximum motor torque * stepper motor * current gear's gear ratio
             motorPower = maxMotorTorque * Input.GetAxis("Vertical") * stepper * gearVal;
 
-            // Shifting gears automatically
+            #region Automatic Shifting
             float speed = rb.velocity.magnitude * 2.237f;
 
             if (automaticGears == true)
@@ -155,6 +165,8 @@ public class CarController : MonoBehaviour
             }
 
             gearVal = gears[curGear];
+
+            #endregion
         }
         // If input direction and velocity direction don't match...
         else if ((forwardVelocity >= 0 && Input.GetAxis("Vertical") < 0) || (forwardVelocity <= 0 && Input.GetAxis("Vertical") > 0))
@@ -169,9 +181,18 @@ public class CarController : MonoBehaviour
             motorPower = 0;
         }
 
+        // Wheel Slip
+        fl.GetGroundHit(out WheelHit flData);
+        fr.GetGroundHit(out WheelHit frData);
+        bl.GetGroundHit(out WheelHit blData);
+        br.GetGroundHit(out WheelHit brData);
+
+        totalForwardSlip += flData.forwardSlip + frData.forwardSlip + blData.forwardSlip + brData.forwardSlip;
+
         // For each axle in the car...
         foreach (AxleInfo axleInfo in axleInfos)
         {
+            #region Steering
             // If the wheel can steer, apply the steering angle
             if (axleInfo.steering)
             {
@@ -181,7 +202,9 @@ public class CarController : MonoBehaviour
                 freeWheelRPM += axleInfo.leftWheel.rpm;
                 freeWheelRPM += axleInfo.rightWheel.rpm;
             }
-            // If the wheel can drive, apply the motor torque
+            #endregion
+
+            #region Motor
             if (axleInfo.motor)
             {
                 driveWheelNum += 2;
@@ -189,20 +212,21 @@ public class CarController : MonoBehaviour
                 totalWheelRPM += axleInfo.leftWheel.rpm;
                 totalWheelRPM += axleInfo.rightWheel.rpm;
 
-                // Traction control - (anti wheelspin)
-                if (tractionControl == true && ((totalWheelRPM / 2 - freeWheelRPM / 2) > 250 || (freeWheelRPM / 2 - totalWheelRPM / 2) > 250))
+                // Traction Control
+                // If the total slip value exceeds the threshold, and the car is not braking, then motor power is zero
+                if (tractionControl == true && (totalForwardSlip >= 1f || totalForwardSlip <= -1) && engineRPM != 0)
                 {
                     motorPower = 0;
-                    braking = 10000; // Newton Meters
                 }
 
                 axleInfo.leftWheel.motorTorque = motorPower;
                 axleInfo.rightWheel.motorTorque = motorPower;
             }
+            #endregion
 
             // Apply braking torque (60 front/40 back braking ratio)
-            axleInfo.leftWheel.brakeTorque = braking * 1.1f;
-            axleInfo.rightWheel.brakeTorque = braking * 0.9f;
+            axleInfo.leftWheel.brakeTorque = braking * 0.6f;
+            axleInfo.rightWheel.brakeTorque = braking * 0.4f;
 
             ApplyLocalPositionToVisuals(axleInfo.leftWheel);
             ApplyLocalPositionToVisuals(axleInfo.rightWheel);

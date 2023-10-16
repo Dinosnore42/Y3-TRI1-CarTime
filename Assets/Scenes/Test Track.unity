@@ -123,6 +123,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!146 &162472456 stripped
+WheelCollider:
+  m_CorrespondingSourceObject: {fileID: 6756306600930871769, guid: 25e52409a555de647b401091076602a1, type: 3}
+  m_PrefabInstance: {fileID: 5675202487084677592}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &191922091
 GameObject:
   m_ObjectHideFlags: 3
@@ -348,6 +353,21 @@ MonoBehaviour:
 --- !u!4 &624754566 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4094849368024335755, guid: 25e52409a555de647b401091076602a1, type: 3}
+  m_PrefabInstance: {fileID: 5675202487084677592}
+  m_PrefabAsset: {fileID: 0}
+--- !u!146 &715990410 stripped
+WheelCollider:
+  m_CorrespondingSourceObject: {fileID: 9099972295821310297, guid: 25e52409a555de647b401091076602a1, type: 3}
+  m_PrefabInstance: {fileID: 5675202487084677592}
+  m_PrefabAsset: {fileID: 0}
+--- !u!146 &1057677804 stripped
+WheelCollider:
+  m_CorrespondingSourceObject: {fileID: 3280633221940086030, guid: 25e52409a555de647b401091076602a1, type: 3}
+  m_PrefabInstance: {fileID: 5675202487084677592}
+  m_PrefabAsset: {fileID: 0}
+--- !u!146 &1504979435 stripped
+WheelCollider:
+  m_CorrespondingSourceObject: {fileID: 6928135429481260244, guid: 25e52409a555de647b401091076602a1, type: 3}
   m_PrefabInstance: {fileID: 5675202487084677592}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1817236226
@@ -2189,6 +2209,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Car
       objectReference: {fileID: 0}
+    - target: {fileID: 8890747523907464348, guid: 25e52409a555de647b401091076602a1, type: 3}
+      propertyPath: bl
+      value: 
+      objectReference: {fileID: 162472456}
+    - target: {fileID: 8890747523907464348, guid: 25e52409a555de647b401091076602a1, type: 3}
+      propertyPath: br
+      value: 
+      objectReference: {fileID: 1504979435}
+    - target: {fileID: 8890747523907464348, guid: 25e52409a555de647b401091076602a1, type: 3}
+      propertyPath: fl
+      value: 
+      objectReference: {fileID: 715990410}
+    - target: {fileID: 8890747523907464348, guid: 25e52409a555de647b401091076602a1, type: 3}
+      propertyPath: fr
+      value: 
+      objectReference: {fileID: 1057677804}
     - target: {fileID: 8890747523907464348, guid: 25e52409a555de647b401091076602a1, type: 3}
       propertyPath: gears.Array.data[0]
       value: 3.2
