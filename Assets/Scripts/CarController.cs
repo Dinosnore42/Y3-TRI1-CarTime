@@ -62,13 +62,13 @@ public class CarController : MonoBehaviour
     public void Update()
     {
         // Gear shifts up
-        if (Input.GetKeyDown(KeyCode.UpArrow) && curGear < 5)
+        if (Input.GetKeyDown(KeyCode.UpArrow) && curGear < 5 && automaticGears == false)
         {
             curGear++;
         }
 
         // Gear shifts down
-        if (Input.GetKeyDown(KeyCode.DownArrow) && curGear > 1)
+        if (Input.GetKeyDown(KeyCode.DownArrow) && curGear > 1 && automaticGears == false)
         {
             curGear--;
         }
@@ -103,13 +103,13 @@ public class CarController : MonoBehaviour
     }
 
     // Applies motion to the wheels
-    public void FixedUpdate()
+    public void InputResponse(float vertical, float horizontal)
     {
         #region Variable Values
         float stepper = 4f; // Stepping up gear between gearbox and driveshaft
         gearVal = gears[curGear]; // Sets gear ratio to that of current gear value
         
-        float steering = maxSteeringAngle * Input.GetAxis("Horizontal"); // Input intensity of steering
+        float steering = maxSteeringAngle * horizontal; // Input intensity of steering
         int driveWheelNum = 0; // Number of drive wheels
         float forwardVelocity = Vector3.Dot(rb.velocity, transform.forward); // The direction the car is driving in
 
@@ -122,10 +122,10 @@ public class CarController : MonoBehaviour
         #endregion
 
         // If input direction and velocity direction match...
-        if ((forwardVelocity >= 0 && Input.GetAxis("Vertical") > 0) || (forwardVelocity <= 0 && Input.GetAxis("Vertical") < 0))
+        if ((forwardVelocity >= 0 && vertical > 0) || (forwardVelocity <= 0 && vertical < 0))
         {
             // ...Motor power becomes input intensity up to maximum motor torque * stepper motor * current gear's gear ratio
-            motorPower = maxMotorTorque * Input.GetAxis("Vertical") * stepper * gearVal;
+            motorPower = maxMotorTorque * vertical * stepper * gearVal;
 
             #region Automatic Shifting
             float speed = rb.velocity.magnitude * 2.237f;
@@ -155,7 +155,7 @@ public class CarController : MonoBehaviour
             }
 
             // If the car is reversing...
-            if ((forwardVelocity <= 0 && Input.GetAxis("Vertical") < 0))
+            if ((forwardVelocity <= 0 && vertical < 0))
             {
                 // ...Set it into reverse gear
                 curGear = 0;
@@ -172,7 +172,7 @@ public class CarController : MonoBehaviour
             #endregion
         }
         // If input direction and velocity direction don't match...
-        else if ((forwardVelocity >= 0 && Input.GetAxis("Vertical") < 0) || (forwardVelocity <= 0 && Input.GetAxis("Vertical") > 0))
+        else if ((forwardVelocity >= 0 && vertical < 0) || (forwardVelocity <= 0 && vertical > 0))
         {
             // ...The car is braking
             braking = 10000; // Newton Meters
