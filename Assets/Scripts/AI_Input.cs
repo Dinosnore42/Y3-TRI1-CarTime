@@ -24,14 +24,14 @@ public class AI_Input : MonoBehaviour
 
         horizontal = 0;
 
-        var leftRay = new Ray(this.transform.position, -this.transform.right);
-        if (Physics.Raycast(leftRay, out hit, 7.5f))    // Use layers to not hit certain things
+        var leftRay = new Ray(this.transform.position, -this.transform.right + transform.forward);
+        if (Physics.Raycast(leftRay, out hit, 10f))    // Use layers to not hit certain things
         {
             horizontal += 0.1f;
         }
 
-        var rightRay = new Ray(this.transform.position, this.transform.right);
-        if (Physics.Raycast(rightRay, out hit, 7.5f))
+        var rightRay = new Ray(this.transform.position, this.transform.right + transform.forward);
+        if (Physics.Raycast(rightRay, out hit, 10f))
         {
             horizontal += -0.1f;
         }
@@ -47,5 +47,13 @@ public class AI_Input : MonoBehaviour
         }
 
         aiCar.InputResponse(vertical, horizontal);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawRay(this.transform.position, (-this.transform.right + transform.forward).normalized * 10f);
+        Gizmos.DrawRay(this.transform.position, (this.transform.right + transform.forward).normalized * 10f);
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(this.transform.position, transform.forward * 15f);
     }
 }
