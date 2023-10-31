@@ -416,6 +416,11 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!54 &380515367 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 3946112984509248022, guid: a1716b0b240adb449a5e76a74432bd92, type: 3}
+  m_PrefabInstance: {fileID: 7496520043769363297}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &624754566 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4094849368024335755, guid: 25e52409a555de647b401091076602a1, type: 3}
@@ -3257,7 +3262,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2335556767298013982, guid: a1716b0b240adb449a5e76a74432bd92, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 18.79
+      value: -12.63
       objectReference: {fileID: 0}
     - target: {fileID: 2335556767298013982, guid: a1716b0b240adb449a5e76a74432bd92, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3265,7 +3270,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2335556767298013982, guid: a1716b0b240adb449a5e76a74432bd92, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -26.98
+      value: -24.33
       objectReference: {fileID: 0}
     - target: {fileID: 2335556767298013982, guid: a1716b0b240adb449a5e76a74432bd92, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3295,6 +3300,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7566867561744146859, guid: a1716b0b240adb449a5e76a74432bd92, type: 3}
+      propertyPath: rb
+      value: 
+      objectReference: {fileID: 380515367}
     - target: {fileID: 7566867561744146859, guid: a1716b0b240adb449a5e76a74432bd92, type: 3}
       propertyPath: waypointBundle
       value: 

@@ -1525,3 +1525,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5aab994177bcbba46a797ef3df7dc181, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  waypoints: []
+  waypointBundle: {fileID: 0}
+  waypointIndex: 0
+  target: {fileID: 0}
+  heading: {x: 0, y: 0, z: 0}
+  angle: 0
+  steeringAcceptance: 5

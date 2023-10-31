@@ -128,7 +128,7 @@ public class CarController : MonoBehaviour
             motorPower = maxMotorTorque * vertical * stepper * gearVal;
 
             #region Automatic Shifting
-            float speed = rb.velocity.magnitude * 2.237f;
+            float speed = rb.velocity.magnitude * 2.237f;   // m/s into mi/h
 
             if (automaticGears == true)
             {

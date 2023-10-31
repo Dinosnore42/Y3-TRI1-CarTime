@@ -17,11 +17,14 @@ public class AI_Input : MonoBehaviour
     public Transform target;
     public Vector3 heading;
     public float angle;
+    private Rigidbody rb;
+    public float steeringAcceptance;
 
     // Start is called before the first frame update
     void Start()
     {
         aiCar = GetComponent<CarController>();
+        rb = GetComponent<Rigidbody>();
 
         foreach (Transform child in waypointBundle.transform)
         {
@@ -37,7 +40,7 @@ public class AI_Input : MonoBehaviour
         horizontal = 0;
 
         // Check if waypoint is reached
-        if (Vector3.Distance(transform.position, target.position) < 5)
+        if (Vector3.Distance(transform.position, target.position) < 10)
         {
             IterateWaypointIndex();
             UpdateDestination();
@@ -47,12 +50,14 @@ public class AI_Input : MonoBehaviour
         heading = transform.InverseTransformDirection(target.position - transform.position);
         angle = Mathf.Atan2(heading.x, heading.z) * Mathf.Rad2Deg * -1;
 
-        if (angle <- 5)
+        // Steer right towards a waypoint
+        if (angle < -steeringAcceptance)
         {
             horizontal += 0.5f;
         }
 
-        if (angle > 5)
+        // Steer left towards a waypoint
+        if (angle > steeringAcceptance)
         {
             horizontal -= 0.5f;
         }
@@ -65,25 +70,25 @@ public class AI_Input : MonoBehaviour
         var leftRay = new Ray(this.transform.position, -this.transform.right + transform.forward);
         if (Physics.Raycast(leftRay, out hit, 10f, layer_mask))    // Use layers to not hit certain things
         {
-            horizontal += 0.5f;
+            horizontal += 0.2f;
         }
 
         // Go left
         var rightRay = new Ray(this.transform.position, this.transform.right + transform.forward);
         if (Physics.Raycast(rightRay, out hit, 10f, layer_mask))
         {
-            horizontal += -0.5f;
+            horizontal += -0.2f;
         }
 
         // Go forwards or backwards
         var forRay = new Ray(this.transform.position, this.transform.forward);
-        if (Physics.Raycast(forRay, out hit, 15f, layer_mask))    // Use layers to not hit certain things
+        if (Physics.Raycast(forRay, out hit, (rb.velocity.magnitude * 1.3f), layer_mask))    // Use layers to not hit certain things
         {
-            vertical = -0.5f;
+            vertical = -1f;
         }
         else
         {
-            vertical = 0.5f;
+            vertical = 1f;
         }
 
         aiCar.InputResponse(vertical, horizontal);
@@ -92,14 +97,13 @@ public class AI_Input : MonoBehaviour
     // See raycasts
     private void OnDrawGizmos()
     {
-        Gizmos.DrawRay(this.transform.position, (-this.transform.right + transform.forward).normalized * 10f);
-        Gizmos.DrawRay(this.transform.position, (this.transform.right + transform.forward).normalized * 10f);
-        Gizmos.color = Color.red;
-        Gizmos.DrawRay(this.transform.position, transform.forward * 15f);
-        
         if(Application.isPlaying)
         {
-            Gizmos.DrawWireSphere(target.position, 5f);
+            Gizmos.DrawRay(this.transform.position, (-this.transform.right + transform.forward).normalized * 10f);
+            Gizmos.DrawRay(this.transform.position, (this.transform.right + transform.forward).normalized * 10f);
+            Gizmos.color = Color.red;
+            Gizmos.DrawRay(this.transform.position, transform.forward * rb.velocity.magnitude * 1.3f);
+            Gizmos.DrawWireSphere(target.position, 10f);
         }
     }
 
