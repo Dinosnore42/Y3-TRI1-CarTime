@@ -10,32 +10,65 @@ public class AI_Input : MonoBehaviour
     private CarController aiCar;
     private float vertical;
     private float horizontal;
+    public Transform[] waypoints;
+    public int waypointIndex;
+    public Transform target;
+    public Vector3 heading;
+    public float angle;
 
     // Start is called before the first frame update
     void Start()
     {
         aiCar = GetComponent<CarController>();
+        UpdateDestination();
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        RaycastHit hit;
-
         horizontal = 0;
 
+        // Check if waypoint is reached
+        if (Vector3.Distance(transform.position, target.position) < 5)
+        {
+            IterateWaypointIndex();
+            UpdateDestination();
+        }
+
+        // Steer towards target point
+        heading = transform.InverseTransformDirection(target.position - transform.position);
+        angle = Mathf.Atan2(heading.x, heading.z) * Mathf.Rad2Deg * -1;
+
+        if (angle <- 5)
+        {
+            horizontal += 0.5f;
+        }
+
+        if (angle > 5)
+        {
+            horizontal -= 0.5f;
+        }
+
+
+
+
+        RaycastHit hit;
+
+        // Go right
         var leftRay = new Ray(this.transform.position, -this.transform.right + transform.forward);
         if (Physics.Raycast(leftRay, out hit, 10f))    // Use layers to not hit certain things
         {
-            horizontal += 0.1f;
+            horizontal += 0.5f;
         }
 
+        // Go left
         var rightRay = new Ray(this.transform.position, this.transform.right + transform.forward);
         if (Physics.Raycast(rightRay, out hit, 10f))
         {
-            horizontal += -0.1f;
+            horizontal += -0.5f;
         }
 
+        // Go forwards or backwards
         var forRay = new Ray(this.transform.position, this.transform.forward);
         if (Physics.Raycast(forRay, out hit, 15f))    // Use layers to not hit certain things
         {
@@ -49,11 +82,29 @@ public class AI_Input : MonoBehaviour
         aiCar.InputResponse(vertical, horizontal);
     }
 
+    // See raycasts
     private void OnDrawGizmos()
     {
         Gizmos.DrawRay(this.transform.position, (-this.transform.right + transform.forward).normalized * 10f);
         Gizmos.DrawRay(this.transform.position, (this.transform.right + transform.forward).normalized * 10f);
         Gizmos.color = Color.red;
         Gizmos.DrawRay(this.transform.position, transform.forward * 15f);
+        Gizmos.DrawWireSphere(target.position, 5f);
+    }
+
+    // Set destination to the next waypoint
+    void UpdateDestination()
+    {
+        target = waypoints[waypointIndex].transform;
+    }
+
+    // If we've done all waypoints, go to first waypoint
+    void IterateWaypointIndex()
+    {
+        waypointIndex++;
+        if(waypointIndex == waypoints.Length)
+        {
+            waypointIndex = 0;
+        }
     }
 }
