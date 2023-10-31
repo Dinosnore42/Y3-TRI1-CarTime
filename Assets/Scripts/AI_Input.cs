@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using Unity.VisualScripting.FullSerializer;
 using UnityEditor;
 using UnityEngine;
@@ -10,7 +11,8 @@ public class AI_Input : MonoBehaviour
     private CarController aiCar;
     private float vertical;
     private float horizontal;
-    public Transform[] waypoints;
+    public List<Transform> waypoints;
+    public GameObject waypointBundle;
     public int waypointIndex;
     public Transform target;
     public Vector3 heading;
@@ -20,6 +22,12 @@ public class AI_Input : MonoBehaviour
     void Start()
     {
         aiCar = GetComponent<CarController>();
+
+        foreach (Transform child in waypointBundle.transform)
+        {
+            waypoints.Add(child);
+        }
+
         UpdateDestination();
     }
 
@@ -48,9 +56,6 @@ public class AI_Input : MonoBehaviour
         {
             horizontal -= 0.5f;
         }
-
-
-
 
         RaycastHit hit;
         int layer_mask = LayerMask.GetMask("Track Wall");
@@ -91,7 +96,11 @@ public class AI_Input : MonoBehaviour
         Gizmos.DrawRay(this.transform.position, (this.transform.right + transform.forward).normalized * 10f);
         Gizmos.color = Color.red;
         Gizmos.DrawRay(this.transform.position, transform.forward * 15f);
-        Gizmos.DrawWireSphere(target.position, 5f);
+        
+        if(Application.isPlaying)
+        {
+            Gizmos.DrawWireSphere(target.position, 5f);
+        }
     }
 
     // Set destination to the next waypoint
@@ -104,7 +113,7 @@ public class AI_Input : MonoBehaviour
     void IterateWaypointIndex()
     {
         waypointIndex++;
-        if(waypointIndex == waypoints.Length)
+        if(waypointIndex == waypoints.Count)
         {
             waypointIndex = 0;
         }
