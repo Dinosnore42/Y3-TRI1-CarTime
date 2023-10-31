@@ -53,24 +53,26 @@ public class AI_Input : MonoBehaviour
 
 
         RaycastHit hit;
+        int layer_mask = LayerMask.GetMask("Track Wall");
+        layer_mask = ~layer_mask;
 
         // Go right
         var leftRay = new Ray(this.transform.position, -this.transform.right + transform.forward);
-        if (Physics.Raycast(leftRay, out hit, 10f))    // Use layers to not hit certain things
+        if (Physics.Raycast(leftRay, out hit, 10f, layer_mask))    // Use layers to not hit certain things
         {
             horizontal += 0.5f;
         }
 
         // Go left
         var rightRay = new Ray(this.transform.position, this.transform.right + transform.forward);
-        if (Physics.Raycast(rightRay, out hit, 10f))
+        if (Physics.Raycast(rightRay, out hit, 10f, layer_mask))
         {
             horizontal += -0.5f;
         }
 
         // Go forwards or backwards
         var forRay = new Ray(this.transform.position, this.transform.forward);
-        if (Physics.Raycast(forRay, out hit, 15f))    // Use layers to not hit certain things
+        if (Physics.Raycast(forRay, out hit, 15f, layer_mask))    // Use layers to not hit certain things
         {
             vertical = -0.5f;
         }
