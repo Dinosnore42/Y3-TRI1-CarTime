@@ -9,16 +9,17 @@ using UnityEngine;
 public class AI_Input : MonoBehaviour
 {
     private CarController aiCar;
-    public float vertical;      // Change to priv
-    public float horizontal;    // Change to priv
+    private float vertical;
+    private float horizontal;
     public List<Transform> waypoints;
     public GameObject waypointBundle;
     public int waypointIndex;
     public Transform target;
-    public Vector3 heading;
-    public float angle;
-    private Rigidbody rb;
+    private Vector3 heading;
+    private float angle;
+    public Rigidbody rb;
     public float steeringAcceptance;
+    public float targetVelocity;
 
     // Start is called before the first frame update
     void Start()
@@ -53,13 +54,13 @@ public class AI_Input : MonoBehaviour
         // Steer right towards a waypoint
         if (angle < -steeringAcceptance)
         {
-            horizontal += 0.1f;
+            horizontal += 0.5f;
         }
 
         // Steer left towards a waypoint
         if (angle > steeringAcceptance)
         {
-            horizontal -= 0.1f;
+            horizontal -= 0.5f;
         }
 
         RaycastHit hit;
@@ -71,17 +72,20 @@ public class AI_Input : MonoBehaviour
         var leftRay = new Ray(this.transform.position, -this.transform.right + transform.forward);
         if (Physics.Raycast(leftRay, out hit, 10f, layer_mask))    // Use layers to not hit certain things
         {
-            horizontal += 0.2f;
+            horizontal += 0.6f;
         }
 
         // Go left
         var rightRay = new Ray(this.transform.position, this.transform.right + transform.forward);
         if (Physics.Raycast(rightRay, out hit, 10f, layer_mask))
         {
-            horizontal += -0.2f;
+            horizontal += -0.6f;
         }
 
         // Go forwards or backwards
+        // Also factor in target velocity
+        targetVelocity = target.transform.localScale.x;
+
         var forRay = new Ray(this.transform.position, this.transform.forward);
         if (Physics.Raycast(forRay, out hit, 15f, layer_mask))    // Use layers to not hit certain things
         {
@@ -89,7 +93,14 @@ public class AI_Input : MonoBehaviour
         }
         else
         {
-            vertical = 1f;
+            if (targetVelocity < (rb.velocity.magnitude * 2.237f))
+            {
+                vertical = -1f;
+            }
+            else
+            {
+                vertical = 1f;
+            }
         }
 
         aiCar.InputResponse(vertical, horizontal);
@@ -98,7 +109,7 @@ public class AI_Input : MonoBehaviour
     // See raycasts
     private void OnDrawGizmos()
     {
-        if(Application.isPlaying)
+        if (Application.isPlaying)
         {
             Gizmos.DrawRay(this.transform.position, (-this.transform.right + transform.forward).normalized * 10f);
             Gizmos.DrawRay(this.transform.position, (this.transform.right + transform.forward).normalized * 10f);
