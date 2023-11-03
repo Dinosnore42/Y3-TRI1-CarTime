@@ -20,7 +20,6 @@ public class AI_Input : MonoBehaviour
     public Rigidbody rb;
     public float steeringAcceptance;
     public float targetVelocity;
-    public List<GameObject> carsInRadius;
 
     // Start is called before the first frame update
     void Start()
@@ -51,16 +50,24 @@ public class AI_Input : MonoBehaviour
         // Set up layer mask for detection radius
         int carLayerMask = LayerMask.GetMask("Car");
 
-        carsInRadius.Clear();
-
         foreach (Collider car in Physics.OverlapSphere(this.transform.position, 20, carLayerMask))
         {
-            //carsInRadius.Add(car.transform.root.gameObject);
+            GameObject trueCar = car.transform.root.gameObject;
 
-            GameObject carRoot = car.transform.root.gameObject;
+            // Stop car from identifying itself
+            if (trueCar.name != this.name)
+            {
+                Vector3 offset = transform.InverseTransformDirection(trueCar.transform.position - this.transform.position);
+                Vector3 relativeVelocity = trueCar.GetComponent<Rigidbody>().velocity - rb.velocity;
 
-            //int velDif = carRoot.GetComponent<Rigidbody>().velocity.magnitude - rb.velocity.magnitude;
+                // Offset: x is lateral, z is forward/backward.
+
+                Debug.Log(this.name + " reporting " + trueCar.name + " is " + offset);
+            }
         }
+
+
+
 
 
 
