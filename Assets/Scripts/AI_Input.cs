@@ -48,11 +48,6 @@ public class AI_Input : MonoBehaviour
             UpdateDestination();
         }
 
-        // Set up layer mask for raycast to only hit walls
-        RaycastHit hit;
-        int wallLayerMask = LayerMask.GetMask("RaycastCollider");
-        wallLayerMask = ~wallLayerMask;
-
         // Set up layer mask for detection radius
         int carLayerMask = LayerMask.GetMask("Car");
 
@@ -60,7 +55,11 @@ public class AI_Input : MonoBehaviour
 
         foreach (Collider car in Physics.OverlapSphere(this.transform.position, 20, carLayerMask))
         {
-            carsInRadius.Add(car.transform.root.gameObject);
+            //carsInRadius.Add(car.transform.root.gameObject);
+
+            GameObject carRoot = car.transform.root.gameObject;
+
+            //int velDif = carRoot.GetComponent<Rigidbody>().velocity.magnitude - rb.velocity.magnitude;
         }
 
 
@@ -85,20 +84,22 @@ public class AI_Input : MonoBehaviour
             horizontal -= 0.5f;
         }
 
+        RaycastHit hit;
+
         // If wall is on the left, go right
         var leftRay = new Ray(this.transform.position, -this.transform.right + transform.forward);
-        if (Physics.Raycast(leftRay, out hit, 10f, wallLayerMask))    // Use layers to not hit certain things
+        if (Physics.Raycast(leftRay, out hit, 10f) && hit.collider.gameObject.layer == 3)    // Use layers to not hit certain things
         {
             horizontal += 0.6f;
         }
 
         // If wall is on the right, go left
         var rightRay = new Ray(this.transform.position, this.transform.right + transform.forward);
-        if (Physics.Raycast(rightRay, out hit, 10f, wallLayerMask))
+        if (Physics.Raycast(rightRay, out hit, 10f) && hit.collider.gameObject.layer == 3)
         {
             horizontal += -0.6f;
         }
-
+        
         #endregion
 
         #region Acceleration and Braking
@@ -108,8 +109,9 @@ public class AI_Input : MonoBehaviour
 
         // If the car has hit a wall, reverse
         var forRay = new Ray(this.transform.position, this.transform.forward);
-        if (Physics.Raycast(forRay, out hit, 15f, wallLayerMask))    // Use layers to not hit certain things
+        if (Physics.Raycast(forRay, out hit, 15f) && hit.collider.gameObject.layer == 3)    // Use layers to not hit certain things
         {
+            Debug.Log("Target seen ");
             vertical = -1f;
         }
         else
@@ -127,6 +129,26 @@ public class AI_Input : MonoBehaviour
         }
 
         #endregion
+
+        // Cap vertical/horizontal input
+
+        if (vertical > 1)
+        {
+            vertical = 1;
+        }
+        else if (vertical < -1)
+        {
+            vertical = -1;
+        }
+
+        if (horizontal > 1)
+        {
+            horizontal = 1;
+        }
+        else if (horizontal < -1)
+        {
+            horizontal = -1;
+        }
 
         aiCar.InputResponse(vertical, horizontal);
     }
