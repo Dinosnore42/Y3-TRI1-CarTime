@@ -63,8 +63,9 @@ public class AI_Input : MonoBehaviour
         }
 
         RaycastHit hit;
-        int layer_mask = LayerMask.GetMask("Track Wall", "Cars");
+        int layer_mask = LayerMask.GetMask("RaycastCollider");
         layer_mask = ~layer_mask;
+        // WARNING: RAYCASTS DO NOT PICK UP OTHER CARS AND I DON'T KNOW WHY
 
         // Go right
         var leftRay = new Ray(this.transform.position, -this.transform.right + transform.forward);
@@ -82,7 +83,7 @@ public class AI_Input : MonoBehaviour
 
         // Go forwards or backwards
         var forRay = new Ray(this.transform.position, this.transform.forward);
-        if (Physics.Raycast(forRay, out hit, (rb.velocity.magnitude * 1.3f) + 3f, layer_mask))    // Use layers to not hit certain things
+        if (Physics.Raycast(forRay, out hit, 15f, layer_mask))    // Use layers to not hit certain things
         {
             vertical = -1f;
         }
@@ -102,7 +103,7 @@ public class AI_Input : MonoBehaviour
             Gizmos.DrawRay(this.transform.position, (-this.transform.right + transform.forward).normalized * 10f);
             Gizmos.DrawRay(this.transform.position, (this.transform.right + transform.forward).normalized * 10f);
             Gizmos.color = Color.red;
-            Gizmos.DrawRay(this.transform.position, transform.forward * ((rb.velocity.magnitude * 1.3f) + 3f));
+            Gizmos.DrawRay(this.transform.position, transform.forward.normalized * 15f);
             Gizmos.DrawWireSphere(target.position, 9f);
         }
     }
