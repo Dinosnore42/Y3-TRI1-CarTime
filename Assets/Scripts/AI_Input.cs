@@ -9,8 +9,8 @@ using UnityEngine;
 public class AI_Input : MonoBehaviour
 {
     private CarController aiCar;
-    private float vertical;
-    private float horizontal;
+    public float vertical;      // Change to priv
+    public float horizontal;    // Change to priv
     public List<Transform> waypoints;
     public GameObject waypointBundle;
     public int waypointIndex;
@@ -53,17 +53,17 @@ public class AI_Input : MonoBehaviour
         // Steer right towards a waypoint
         if (angle < -steeringAcceptance)
         {
-            horizontal += 0.5f;
+            horizontal += 0.1f;
         }
 
         // Steer left towards a waypoint
         if (angle > steeringAcceptance)
         {
-            horizontal -= 0.5f;
+            horizontal -= 0.1f;
         }
 
         RaycastHit hit;
-        int layer_mask = LayerMask.GetMask("Track Wall");
+        int layer_mask = LayerMask.GetMask("Track Wall", "Cars");
         layer_mask = ~layer_mask;
 
         // Go right
@@ -82,7 +82,7 @@ public class AI_Input : MonoBehaviour
 
         // Go forwards or backwards
         var forRay = new Ray(this.transform.position, this.transform.forward);
-        if (Physics.Raycast(forRay, out hit, (rb.velocity.magnitude * 1.3f), layer_mask))    // Use layers to not hit certain things
+        if (Physics.Raycast(forRay, out hit, (rb.velocity.magnitude * 1.3f) + 3f, layer_mask))    // Use layers to not hit certain things
         {
             vertical = -1f;
         }
@@ -102,8 +102,8 @@ public class AI_Input : MonoBehaviour
             Gizmos.DrawRay(this.transform.position, (-this.transform.right + transform.forward).normalized * 10f);
             Gizmos.DrawRay(this.transform.position, (this.transform.right + transform.forward).normalized * 10f);
             Gizmos.color = Color.red;
-            Gizmos.DrawRay(this.transform.position, transform.forward * rb.velocity.magnitude * 1.3f);
-            Gizmos.DrawWireSphere(target.position, 10f);
+            Gizmos.DrawRay(this.transform.position, transform.forward * ((rb.velocity.magnitude * 1.3f) + 3f));
+            Gizmos.DrawWireSphere(target.position, 9f);
         }
     }
 
