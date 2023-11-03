@@ -20,6 +20,7 @@ public class AI_Input : MonoBehaviour
     public Rigidbody rb;
     public float steeringAcceptance;
     public float targetVelocity;
+    public List<GameObject> carsInRadius;
 
     // Start is called before the first frame update
     void Start()
@@ -47,6 +48,27 @@ public class AI_Input : MonoBehaviour
             UpdateDestination();
         }
 
+        // Set up layer mask for raycast to only hit walls
+        RaycastHit hit;
+        int wallLayerMask = LayerMask.GetMask("RaycastCollider");
+        wallLayerMask = ~wallLayerMask;
+
+        // Set up layer mask for detection radius
+        int carLayerMask = LayerMask.GetMask("Car");
+
+        carsInRadius.Clear();
+
+        foreach (Collider car in Physics.OverlapSphere(this.transform.position, 20, carLayerMask))
+        {
+            carsInRadius.Add(car.transform.root.gameObject);
+        }
+
+
+
+
+
+        #region Steering
+
         // Steer towards target point
         heading = transform.InverseTransformDirection(target.position - transform.position);
         angle = Mathf.Atan2(heading.x, heading.z) * Mathf.Rad2Deg * -1;
@@ -63,45 +85,48 @@ public class AI_Input : MonoBehaviour
             horizontal -= 0.5f;
         }
 
-        RaycastHit hit;
-        int layer_mask = LayerMask.GetMask("RaycastCollider");
-        layer_mask = ~layer_mask;
-        // WARNING: RAYCASTS DO NOT PICK UP OTHER CARS AND I DON'T KNOW WHY
-
-        // Go right
+        // If wall is on the left, go right
         var leftRay = new Ray(this.transform.position, -this.transform.right + transform.forward);
-        if (Physics.Raycast(leftRay, out hit, 10f, layer_mask))    // Use layers to not hit certain things
+        if (Physics.Raycast(leftRay, out hit, 10f, wallLayerMask))    // Use layers to not hit certain things
         {
             horizontal += 0.6f;
         }
 
-        // Go left
+        // If wall is on the right, go left
         var rightRay = new Ray(this.transform.position, this.transform.right + transform.forward);
-        if (Physics.Raycast(rightRay, out hit, 10f, layer_mask))
+        if (Physics.Raycast(rightRay, out hit, 10f, wallLayerMask))
         {
             horizontal += -0.6f;
         }
 
-        // Go forwards or backwards
-        // Also factor in target velocity
+        #endregion
+
+        #region Acceleration and Braking
+
+        // Get the waypoint's target velocity
         targetVelocity = target.transform.localScale.x;
 
+        // If the car has hit a wall, reverse
         var forRay = new Ray(this.transform.position, this.transform.forward);
-        if (Physics.Raycast(forRay, out hit, 15f, layer_mask))    // Use layers to not hit certain things
+        if (Physics.Raycast(forRay, out hit, 15f, wallLayerMask))    // Use layers to not hit certain things
         {
             vertical = -1f;
         }
         else
         {
+            // If above waypoint target velocity, brake...
             if (targetVelocity < (rb.velocity.magnitude * 2.237f))
             {
                 vertical = -1f;
             }
+            // ...else, accelerate.
             else
             {
                 vertical = 1f;
             }
         }
+
+        #endregion
 
         aiCar.InputResponse(vertical, horizontal);
     }
@@ -115,7 +140,9 @@ public class AI_Input : MonoBehaviour
             Gizmos.DrawRay(this.transform.position, (this.transform.right + transform.forward).normalized * 10f);
             Gizmos.color = Color.red;
             Gizmos.DrawRay(this.transform.position, transform.forward.normalized * 15f);
-            Gizmos.DrawWireSphere(target.position, 9f);
+            Gizmos.DrawWireSphere(target.position, 14f);
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawWireSphere(this.transform.position, 20f);
         }
     }
 
