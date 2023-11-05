@@ -61,8 +61,13 @@ public class AI_Input : MonoBehaviour
                 //Vector3 relativeVelocity = trueCar.GetComponent<Rigidbody>().velocity - rb.velocity;
 
                 // Offset: x is lateral, z is forward/backward.
+                // Create a map of awareness zones around the car, each dictating a different response
 
                 Debug.Log(this.name + " reporting " + trueCar.name + " is " + offset);
+
+                // Lateral clamps
+
+                
             }
         }
 
