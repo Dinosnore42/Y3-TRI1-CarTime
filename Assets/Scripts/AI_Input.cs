@@ -58,7 +58,7 @@ public class AI_Input : MonoBehaviour
             if (trueCar.name != this.name)
             {
                 Vector3 offset = transform.InverseTransformDirection(trueCar.transform.position - this.transform.position);
-                Vector3 relativeVelocity = trueCar.GetComponent<Rigidbody>().velocity - rb.velocity;
+                //Vector3 relativeVelocity = trueCar.GetComponent<Rigidbody>().velocity - rb.velocity;
 
                 // Offset: x is lateral, z is forward/backward.
 
@@ -95,14 +95,14 @@ public class AI_Input : MonoBehaviour
 
         // If wall is on the left, go right
         var leftRay = new Ray(this.transform.position, -this.transform.right + transform.forward);
-        if (Physics.Raycast(leftRay, out hit, 10f) && hit.collider.gameObject.layer == 3)    // Use layers to not hit certain things
+        if (Physics.Raycast(leftRay, out hit, 10f) && hit.collider.tag == "Wall")    // Use layers to not hit certain things
         {
             horizontal += 0.6f;
         }
 
         // If wall is on the right, go left
         var rightRay = new Ray(this.transform.position, this.transform.right + transform.forward);
-        if (Physics.Raycast(rightRay, out hit, 10f) && hit.collider.gameObject.layer == 3)
+        if (Physics.Raycast(rightRay, out hit, 10f) && hit.collider.tag == "Wall")
         {
             horizontal += -0.6f;
         }
@@ -116,9 +116,8 @@ public class AI_Input : MonoBehaviour
 
         // If the car has hit a wall, reverse
         var forRay = new Ray(this.transform.position, this.transform.forward);
-        if (Physics.Raycast(forRay, out hit, 15f) && hit.collider.gameObject.layer == 3)    // Use layers to not hit certain things
+        if (Physics.Raycast(forRay, out hit, 15f) && hit.collider.tag == "Wall")    // Use layers to not hit certain things
         {
-            Debug.Log("Target seen ");
             vertical = -1f;
         }
         else
@@ -139,23 +138,23 @@ public class AI_Input : MonoBehaviour
 
         // Cap vertical/horizontal input
 
-        if (vertical > 1)
-        {
-            vertical = 1;
-        }
-        else if (vertical < -1)
-        {
-            vertical = -1;
-        }
+        //if (vertical > 1)
+        //{
+        //    vertical = 1;
+        //}
+        //else if (vertical < -1)
+        //{
+        //    vertical = -1;
+        //}
 
-        if (horizontal > 1)
-        {
-            horizontal = 1;
-        }
-        else if (horizontal < -1)
-        {
-            horizontal = -1;
-        }
+        //if (horizontal > 1)
+        //{
+        //    horizontal = 1;
+        //}
+        //else if (horizontal < -1)
+        //{
+        //    horizontal = -1;
+        //}
 
         aiCar.InputResponse(vertical, horizontal);
     }
