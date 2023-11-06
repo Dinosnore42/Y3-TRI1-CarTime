@@ -39,6 +39,7 @@ public class AI_Input : MonoBehaviour
     void FixedUpdate()
     {
         horizontal = 0;
+        RaycastHit hit;
 
         // Check if waypoint is reached
         if (Vector3.Distance(transform.position, target.position) < 10)
@@ -47,58 +48,25 @@ public class AI_Input : MonoBehaviour
             UpdateDestination();
         }
 
-        // Set up layer mask for detection radius
-        int carLayerMask = LayerMask.GetMask("Car");
-
-        foreach (Collider car in Physics.OverlapSphere(this.transform.position, 20, carLayerMask))
-        {
-            GameObject trueCar = car.transform.root.gameObject;
-
-            // Stop car from identifying itself
-            if (trueCar.name != this.name)
-            {
-                Vector3 offset = transform.InverseTransformDirection(trueCar.transform.position - this.transform.position);
-                //Vector3 relativeVelocity = trueCar.GetComponent<Rigidbody>().velocity - rb.velocity;
-
-                // Offset: x is lateral, z is forward/backward.
-                // Create a map of awareness zones around the car, each dictating a different response
-
-                Debug.Log(this.name + " reporting " + trueCar.name + " is " + offset);
-
-                // Lateral clamps
-
-                
-            }
-        }
-
-
-
-
-
-
-
-
         #region Steering
 
-        // Steer towards target point
+        // Get direction and angle of target point relative to the car
         heading = transform.InverseTransformDirection(target.position - transform.position);
         angle = Mathf.Atan2(heading.x, heading.z) * Mathf.Rad2Deg * -1;
 
-        // Steer right towards a waypoint
+        // Steer right, towards a waypoint
         if (angle < -steeringAcceptance)
         {
             horizontal += 0.5f;
         }
 
-        // Steer left towards a waypoint
+        // Steer left, towards a waypoint
         if (angle > steeringAcceptance)
         {
             horizontal -= 0.5f;
         }
 
-        RaycastHit hit;
-
-        // If wall is on the left, go right
+        // If a wall is on the left, go right
         var leftRay = new Ray(this.transform.position, -this.transform.right + transform.forward);
         if (Physics.Raycast(leftRay, out hit, 10f) && hit.collider.tag == "Wall")    // Use layers to not hit certain things
         {
@@ -111,7 +79,7 @@ public class AI_Input : MonoBehaviour
         {
             horizontal += -0.6f;
         }
-        
+
         #endregion
 
         #region Acceleration and Braking
@@ -127,7 +95,7 @@ public class AI_Input : MonoBehaviour
         }
         else
         {
-            // If above waypoint target velocity, brake...
+            // If the car is above a waypoint's target velocity, brake...
             if (targetVelocity < (rb.velocity.magnitude * 2.237f))
             {
                 vertical = -1f;
@@ -141,25 +109,59 @@ public class AI_Input : MonoBehaviour
 
         #endregion
 
+
+
+        #region Object Avoidance
+
+        // Set up layer mask for detection radius
+        int carLayerMask = LayerMask.GetMask("Car");
+
+        foreach (Collider car in Physics.OverlapSphere(this.transform.position, 20, carLayerMask))
+        {
+            GameObject trueCar = car.transform.root.gameObject;
+
+            // Stop car from identifying itself
+            if (trueCar.name != this.name)
+            {
+                Vector3 offset = transform.InverseTransformDirection(trueCar.transform.position - this.transform.position);
+                Vector3 relativeVelocity = trueCar.GetComponent<Rigidbody>().velocity - rb.velocity;
+
+                // Offset: x is lateral, z is forward/backward
+
+                //Debug.Log(this.name + " reporting " + trueCar.name + " is " + offset);
+
+                // Brake if car ahead is braking
+                // Width of 1 car's width
+                if (offset.z >= 3 && offset.x >= -3.6 && offset.x <= 3.6 && relativeVelocity.z < 0)
+                {
+                    vertical = -1f;
+                }
+                
+            }
+        }
+
+        #endregion
+
         // Cap vertical/horizontal input
+        // NOTE TO SELF: Check if inputs can be exceeded past 1 (should be max)
 
-        //if (vertical > 1)
-        //{
-        //    vertical = 1;
-        //}
-        //else if (vertical < -1)
-        //{
-        //    vertical = -1;
-        //}
+        if (vertical > 1)
+        {
+            vertical = 1;
+        }
+        else if (vertical < -1)
+        {
+            vertical = -1;
+        }
 
-        //if (horizontal > 1)
-        //{
-        //    horizontal = 1;
-        //}
-        //else if (horizontal < -1)
-        //{
-        //    horizontal = -1;
-        //}
+        if (horizontal > 1)
+        {
+            horizontal = 1;
+        }
+        else if (horizontal < -1)
+        {
+            horizontal = -1;
+        }
 
         aiCar.InputResponse(vertical, horizontal);
     }
