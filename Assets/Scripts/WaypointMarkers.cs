@@ -27,7 +27,7 @@ public class WaypointMarkers : MonoBehaviour
 
         foreach (Transform waypoint in waypoints)
         {
-            Gizmos.DrawWireSphere(waypoint.position, 15f);
+            Gizmos.DrawWireSphere(waypoint.position, 20f);
             Gizmos.DrawLine(waypoint.position, lastWaypoint.position);
 
             lastWaypoint = waypoint;

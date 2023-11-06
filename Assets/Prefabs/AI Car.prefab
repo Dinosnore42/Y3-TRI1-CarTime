@@ -1532,4 +1532,3 @@ MonoBehaviour:
   rb: {fileID: 0}
   steeringAcceptance: 5
   targetVelocity: 0
-  carsInRadius: []
