@@ -27,7 +27,9 @@ public class CarController : MonoBehaviour
     public float totalForwardSlip; // Total forward slip of all wheels
     public bool automaticGears = true;
     public bool tractionControl = true;
+    public bool ABS = true;
     public float braking;
+    public bool isPlayer;
 
     // Car wheels
     [SerializeField] private WheelCollider fl;
@@ -61,48 +63,58 @@ public class CarController : MonoBehaviour
 
     public void Update()
     {
-        // Gear shifts up
-        if (Input.GetKeyDown(KeyCode.UpArrow) && curGear < 5 && automaticGears == false)
+        if (isPlayer == true)
         {
-            curGear++;
-        }
+            #region Gear Shifting
 
-        // Gear shifts down
-        if (Input.GetKeyDown(KeyCode.DownArrow) && curGear > 1 && automaticGears == false)
-        {
-            curGear--;
-        }
+            if (automaticGears == false)
+            {
+                // Gear shifts up
+                if (Input.GetKeyDown(KeyCode.UpArrow) && curGear < 5 && automaticGears == false)
+                {
+                    curGear++;
+                }
 
-        #region Toggles
-        // Toggle automatic gears
-        if (Input.GetKeyDown("z"))
-        {
-            if (automaticGears == true)
-            {
-                automaticGears = false;
+                // Gear shifts down
+                if (Input.GetKeyDown(KeyCode.DownArrow) && curGear > 1 && automaticGears == false)
+                {
+                    curGear--;
+                }
             }
-            else
-            {
-                automaticGears = true;
-            }
-        }
 
-        // Toggle traction control
-        if (Input.GetKeyDown("x"))
-        {
-            if (tractionControl == true)
+            #endregion
+
+            #region Toggles
+
+            // Toggle automatic gears
+            if (Input.GetKeyDown("z"))
             {
-                tractionControl = false;
+                automaticGears = !automaticGears;
             }
-            else
+
+            // Toggle traction control
+            if (Input.GetKeyDown("x"))
             {
-                tractionControl = true;
+                tractionControl = !tractionControl;
             }
+
+            // Toggle ABS
+            if (Input.GetKeyDown("c"))
+            {
+                ABS = !ABS;
+            }
+
+            #endregion
         }
-        #endregion
     }
 
-    // Applies motion to the wheels
+    // Checks if the script providing inputs is the player's or not
+    public void Identity(bool identityInput)
+    {
+        isPlayer = identityInput;
+    }
+
+    // Applies motion to the wheels based on inputs fed into it by the player / AI
     public void InputResponse(float vertical, float horizontal)
     {
         #region Variable Values
@@ -228,7 +240,10 @@ public class CarController : MonoBehaviour
             #endregion
 
             #region Apply braking torque
-            if (braking != 0 && (totalForwardSlip >= 1f || totalForwardSlip <= -1f))
+
+            // Anti-Lock Braking
+            // If the car is slipping when braking while travelling forwards or backwards, stop braking
+            if (ABS = true && braking != 0 && (totalForwardSlip >= 1f || totalForwardSlip <= -1f))
             {
                 axleInfo.leftWheel.brakeTorque = 0;
                 axleInfo.rightWheel.brakeTorque = 0;

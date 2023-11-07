@@ -11,6 +11,7 @@ public class PlayerInput : MonoBehaviour
     void Start()
     {
         playerCar = GetComponent<CarController>();
+        playerCar.Identity(true);
     }
 
     // Update is called once per frame

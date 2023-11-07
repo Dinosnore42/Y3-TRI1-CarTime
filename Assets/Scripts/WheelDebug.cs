@@ -21,7 +21,7 @@ public class WheelDebug : MonoBehaviour
     private void OnGUI()
     {
         // Background box
-        GUI.Box(new Rect(80, 0, 300, 270), "");
+        GUI.Box(new Rect(80, 0, 300, 285), "");
 
         // Wheel data
         WheelDebugUI(fl, 0, -2);
@@ -61,6 +61,15 @@ public class WheelDebug : MonoBehaviour
         else
         {
             GUI.Label(new Rect(90, 245, 200, 50), ("X: turn on traction control"));
+        }
+
+        if (thisCar.ABS == true)
+        {
+            GUI.Label(new Rect(90, 260, 200, 50), ("C: turn off anti-lock braking"));
+        }
+        else
+        {
+            GUI.Label(new Rect(90, 260, 200, 50), ("C: turn on anti-lock braking"));
         }
     }
 

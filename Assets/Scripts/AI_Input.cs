@@ -26,6 +26,7 @@ public class AI_Input : MonoBehaviour
     void Start()
     {
         aiCar = GetComponent<CarController>();
+        aiCar.Identity(false);
         rb = GetComponent<Rigidbody>();
 
         foreach (Transform child in waypointBundle.transform)
