@@ -20,6 +20,7 @@ public class AI_Input : MonoBehaviour
     public Rigidbody rb;
     public float steeringAcceptance;
     public float targetVelocity;
+    public bool recover;
 
     // Start is called before the first frame update
     void Start()
@@ -94,9 +95,9 @@ public class AI_Input : MonoBehaviour
 
         // If the car has hit a wall, reverse
         var forRay = new Ray(this.transform.position, this.transform.forward);
-        if (Physics.Raycast(forRay, out hit, 15f) && hit.collider.tag == "Wall")    // Use layers to not hit certain things
+        if (Physics.Raycast(forRay, out hit, 6f) && hit.collider.tag == "Wall")    // Use layers to not hit certain things
         {
-            vertical = -1f;
+            recover = true;
         }
         else
         {
@@ -114,7 +115,7 @@ public class AI_Input : MonoBehaviour
 
         #endregion
 
-        #region Object Avoidance
+        #region Car Avoidance
 
         // Set up layer mask for detection radius
         int carLayerMask = LayerMask.GetMask("Car");
@@ -133,8 +134,8 @@ public class AI_Input : MonoBehaviour
                 // Relative Velocity:   -x is forwards
 
                 // Brake if car ahead is braking
-                // Length is up to a car length from the front of this car. Width is 2 cars' width.
-                if (offset.z >= 3 && offset.z <= 9 && offset.x >= -2.4 && offset.x <= 2.4 && -relativeVelocity.x < 0)
+                // Length is up to two car lengths from the front of this car. Width is 2 cars' width.
+                if (offset.z >= 3 && offset.z <= 15 && offset.x >= -2.4 && offset.x <= 2.4 && -relativeVelocity.x < 0)
                 {
                     vertical = -1f;
                 }
@@ -159,8 +160,7 @@ public class AI_Input : MonoBehaviour
 
         #endregion
 
-        // Cap vertical/horizontal input
-        // NOTE TO SELF: Check if inputs can be exceeded past 1 (should be max)
+        #region Cap vertical/horizontal input
 
         if (vertical > 1)
         {
@@ -180,6 +180,19 @@ public class AI_Input : MonoBehaviour
             horizontal = -1;
         }
 
+        #endregion
+
+        // Crash recovery
+        if (Physics.Raycast(forRay, out hit, 12f) && hit.collider.tag == "Wall")
+        {
+            horizontal = horizontal * -1;
+            vertical = -1f;
+        }
+        else
+        {
+            recover = false;
+        }
+
         aiCar.InputResponse(vertical, horizontal);
     }
 
@@ -191,7 +204,7 @@ public class AI_Input : MonoBehaviour
             Gizmos.DrawRay(this.transform.position, (-this.transform.right + transform.forward).normalized * 10f);
             Gizmos.DrawRay(this.transform.position, (this.transform.right + transform.forward).normalized * 10f);
             Gizmos.color = Color.red;
-            Gizmos.DrawRay(this.transform.position, transform.forward.normalized * 15f);
+            Gizmos.DrawRay(this.transform.position, transform.forward.normalized * 12f);
             Gizmos.DrawWireSphere(target.position, 19f);
             Gizmos.color = Color.magenta;
             Gizmos.DrawWireSphere(this.transform.position, 20f);
