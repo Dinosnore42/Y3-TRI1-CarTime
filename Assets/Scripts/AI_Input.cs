@@ -204,7 +204,7 @@ public class AI_Input : MonoBehaviour
             Gizmos.DrawRay(this.transform.position, (-this.transform.right + transform.forward).normalized * 10f);
             Gizmos.DrawRay(this.transform.position, (this.transform.right + transform.forward).normalized * 10f);
             Gizmos.color = Color.red;
-            Gizmos.DrawRay(this.transform.position, transform.forward.normalized * 12f);
+            Gizmos.DrawRay(this.transform.position, transform.forward.normalized * 6f);
             Gizmos.DrawWireSphere(target.position, 19f);
             Gizmos.color = Color.magenta;
             Gizmos.DrawWireSphere(this.transform.position, 20f);
