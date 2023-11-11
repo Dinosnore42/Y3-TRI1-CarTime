@@ -5,17 +5,21 @@ using UnityEngine;
 public class WeaponController : MonoBehaviour
 {
     private Transform weaponMount;
-    private GameObject gunObject;
+    public int ammo;
+    GameObject weapon;
 
     private void Awake()
     {
         weaponMount = transform.Find("WeaponMount");
-        gunObject = Resources.Load("Gun", typeof(GameObject)) as GameObject;
     }
 
     void FixedUpdate()
     {
-        
+        // If a car has a weapon that's out of ammo, destroy it.
+        if (ammo == 0 && weaponMount.childCount > 0)
+        {
+            Destroy(weapon);
+        }
     }
 
     public void WeaponSelect()
@@ -25,8 +29,8 @@ public class WeaponController : MonoBehaviour
         // Gun
         if (weapNum == 1)
         {
-            Debug.Log("Bazinga");
-            Instantiate(gunObject, weaponMount);
+            weapon = Instantiate(Resources.Load("Gun", typeof(GameObject)) as GameObject, weaponMount);
+            ammo = 10;
         }
 
         // Missile
