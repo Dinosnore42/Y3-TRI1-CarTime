@@ -167,6 +167,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &1207048737143065800
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 985102173079284874}
+  m_Layer: 0
+  m_Name: WeaponMount
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &985102173079284874
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1207048737143065800}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.1, z: -0.4}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2335556767298013982}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2019886124984295244
 GameObject:
   m_ObjectHideFlags: 0
@@ -1427,6 +1458,7 @@ Transform:
   - {fileID: 9049121139823721605}
   - {fileID: 898608841146061588}
   - {fileID: 3005443282369517213}
+  - {fileID: 985102173079284874}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -90.012, z: 0}
 --- !u!54 &3946112984509248022
@@ -1508,7 +1540,9 @@ MonoBehaviour:
   totalForwardSlip: 0
   automaticGears: 1
   tractionControl: 1
+  ABS: 1
   braking: 0
+  isPlayer: 0
   fl: {fileID: 3447298934739331348}
   fr: {fileID: 8014546271645718666}
   bl: {fileID: 3111682266730686655}
@@ -1532,3 +1566,4 @@ MonoBehaviour:
   rb: {fileID: 0}
   steeringAcceptance: 5
   targetVelocity: 0
+  recover: 0
