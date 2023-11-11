@@ -6,9 +6,12 @@ using UnityEditor;
 using UnityEngine;
 
 [RequireComponent(typeof(CarController))]
+[RequireComponent(typeof(WeaponController))]
 public class AI_Input : MonoBehaviour
 {
     private CarController aiCar;
+    private WeaponController aiWeapons;
+
     private float vertical;
     private float horizontal;
     public List<Transform> waypoints;
@@ -21,11 +24,13 @@ public class AI_Input : MonoBehaviour
     public float steeringAcceptance;
     public float targetVelocity;
     public bool recover;
+    public bool hasWeapon = false;
 
     // Start is called before the first frame update
     void Start()
     {
         aiCar = GetComponent<CarController>();
+        aiWeapons = GetComponent<WeaponController>();
         aiCar.Identity(false);
         rb = GetComponent<Rigidbody>();
 
@@ -225,6 +230,15 @@ public class AI_Input : MonoBehaviour
         if(waypointIndex == waypoints.Count)
         {
             waypointIndex = 0;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("WeaponPickup") && !hasWeapon)
+        {
+            hasWeapon = !hasWeapon;
+            aiWeapons.WeaponSelect();
         }
     }
 }
