@@ -8,7 +8,6 @@ public class PlayerInput : MonoBehaviour
 {
     private CarController playerCar;
     private WeaponController playerWeapons;
-    public bool hasWeapon = false;
     //public List<CarController> carList = new List<CarController>();
 
     // Start is called before the first frame update
@@ -27,9 +26,8 @@ public class PlayerInput : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("WeaponPickup") && !hasWeapon)
+        if (other.gameObject.CompareTag("WeaponPickup"))
         {
-            hasWeapon = !hasWeapon;
             playerWeapons.WeaponSelect();
         }
     }

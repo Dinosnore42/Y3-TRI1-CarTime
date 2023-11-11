@@ -24,7 +24,6 @@ public class AI_Input : MonoBehaviour
     public float steeringAcceptance;
     public float targetVelocity;
     public bool recover;
-    public bool hasWeapon = false;
 
     // Start is called before the first frame update
     void Start()
@@ -235,9 +234,8 @@ public class AI_Input : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("WeaponPickup") && !hasWeapon)
+        if (other.gameObject.CompareTag("WeaponPickup"))
         {
-            hasWeapon = !hasWeapon;
             aiWeapons.WeaponSelect();
         }
     }

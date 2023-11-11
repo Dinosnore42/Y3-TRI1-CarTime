@@ -5,6 +5,7 @@ using UnityEngine;
 public class WeaponController : MonoBehaviour
 {
     private Transform weaponMount;
+    public bool hasWeapon = false;
     public int ammo;
     GameObject weapon;
 
@@ -19,30 +20,36 @@ public class WeaponController : MonoBehaviour
         if (ammo == 0 && weaponMount.childCount > 0)
         {
             Destroy(weapon);
+            hasWeapon = false;
         }
     }
 
     public void WeaponSelect()
     {
-        int weapNum = 1; //Random.RandomRange(1, 3);
-
-        // Gun
-        if (weapNum == 1)
+        // Check if a player doesn't already have a weapon
+        if (!hasWeapon)
         {
-            weapon = Instantiate(Resources.Load("Gun", typeof(GameObject)) as GameObject, weaponMount);
-            ammo = 10;
-        }
+            hasWeapon = true;
+            int weapNum = 1; //Random.RandomRange(1, 3);
 
-        // Missile
-        else if (weapNum == 2)
-        {
+            // Gun
+            if (weapNum == 1)
+            {
+                weapon = Instantiate(Resources.Load("Gun", typeof(GameObject)) as GameObject, weaponMount);
+                ammo = 10;
+            }
 
-        }
+            // Missile
+            else if (weapNum == 2)
+            {
 
-        // Lightning Rod
-        else
-        {
+            }
 
+            // Lightning Rod
+            else
+            {
+
+            }
         }
     }
 }
