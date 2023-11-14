@@ -8,6 +8,11 @@ public class PlayerInput : MonoBehaviour
 {
     private CarController playerCar;
     private WeaponController playerWeapons;
+    public List<Transform> waypoints;
+    public GameObject waypointBundle;
+    public int waypointIndex;
+    public Transform target;
+    public int lapsFinished = 0;
     //public List<CarController> carList = new List<CarController>();
 
     // Start is called before the first frame update
@@ -16,12 +21,43 @@ public class PlayerInput : MonoBehaviour
         playerCar = GetComponent<CarController>();
         playerWeapons = GetComponent<WeaponController>();
         playerCar.Identity(true);
+
+        foreach (Transform child in waypointBundle.transform)
+        {
+            waypoints.Add(child);
+        }
+
+        UpdateDestination();
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
+        // Check if waypoint is reached
+        if (Vector3.Distance(transform.position, target.position) <= 20)
+        {
+            IterateWaypointIndex();
+            UpdateDestination();
+        }
+
         playerCar.InputResponse(Input.GetAxis("Vertical"), Input.GetAxis("Horizontal"));
+    }
+
+    // Set destination to the next waypoint
+    void UpdateDestination()
+    {
+        target = waypoints[waypointIndex].transform;
+    }
+
+    // If we've done all waypoints, go to first waypoint
+    void IterateWaypointIndex()
+    {
+        waypointIndex++;
+        if (waypointIndex == waypoints.Count)
+        {
+            waypointIndex = 0;
+            lapsFinished++;
+        }
     }
 
     private void OnTriggerEnter(Collider other)

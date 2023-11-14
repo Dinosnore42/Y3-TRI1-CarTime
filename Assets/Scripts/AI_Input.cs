@@ -24,6 +24,7 @@ public class AI_Input : MonoBehaviour
     public float steeringAcceptance;
     public float targetVelocity;
     public bool recover;
+    public int lapsFinished = 1;
 
     // Start is called before the first frame update
     void Start()
@@ -127,7 +128,7 @@ public class AI_Input : MonoBehaviour
 
         foreach (Collider car in Physics.OverlapSphere(this.transform.position, 20, carLayerMask))
         {
-            GameObject trueCar = car.transform.root.gameObject;
+            GameObject trueCar = car.transform.parent.gameObject;
 
             // Stop car from identifying itself
             if (trueCar.name != this.name)
@@ -229,6 +230,7 @@ public class AI_Input : MonoBehaviour
         if(waypointIndex == waypoints.Count)
         {
             waypointIndex = 0;
+            lapsFinished++;
         }
     }
 
