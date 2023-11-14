@@ -113,7 +113,7 @@ public class RacingManager : MonoBehaviour
 
         foreach(placingData entry in placements)
         {
-            GUI.Label(new Rect(85, 305 + (15 * i), 300, 30), (i + 1) + " place: " + placements[i].car.name + " - Lap: " + (placements[i].lapsDone +1 ));
+            GUI.Label(new Rect(85, 305 + (15 * i), 300, 30), (i + 1) + ": " + placements[i].car.name + " - Lap: " + (placements[i].lapsDone + 1));
             i++;
         }
     }
