@@ -309,7 +309,7 @@ GameObject:
   m_Component:
   - component: {fileID: 126948011}
   - component: {fileID: 126948013}
-  - component: {fileID: 126948012}
+  - component: {fileID: 126948014}
   m_Layer: 0
   m_Name: RaceManager
   m_TagString: Untagged
@@ -349,48 +349,6 @@ Transform:
   - {fileID: 1396210552}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &126948012
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 126948010}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cfca1ebcf50946e468f845ed5ee15ab4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  checkpoints:
-  - {fileID: 1891281083}
-  - {fileID: 2131842394}
-  - {fileID: 1771649168}
-  - {fileID: 1419790951}
-  - {fileID: 1438815671}
-  - {fileID: 246473451}
-  - {fileID: 514094082}
-  - {fileID: 189879887}
-  - {fileID: 1356634184}
-  - {fileID: 1110177596}
-  - {fileID: 2007315900}
-  - {fileID: 822301692}
-  - {fileID: 1380230484}
-  - {fileID: 247955348}
-  - {fileID: 1583546465}
-  - {fileID: 1809909929}
-  - {fileID: 1396210552}
-  carsBundle: {fileID: 345166060}
-  cars:
-  - {fileID: 624754566}
-  - {fileID: 2011571519}
-  - {fileID: 1678605727}
-  - {fileID: 2041006777}
-  - {fileID: 1595152049}
-  - {fileID: 942516452}
-  - {fileID: 950832216}
-  - {fileID: 393783023}
-  laps: 3
-  lapsCompleted: 0
 --- !u!114 &126948013
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -421,6 +379,24 @@ MonoBehaviour:
   - {fileID: 1583546465}
   - {fileID: 1809909929}
   - {fileID: 1396210552}
+--- !u!114 &126948014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 126948010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35ec89f815eaf0a4e910a5893e011a87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  checkpoints: []
+  carsBundle: {fileID: 345166060}
+  cars: []
+  placements: []
+  laps: 0
+  lapsCompleted: 0
 --- !u!4 &151106679 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7695902167163595906, guid: bde06e7a046f3f341a9c307888b8df9a, type: 3}
@@ -749,8 +725,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 354533035}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.18875055, y: -0.68144935, z: 0.18875055, w: 0.68144935}
-  m_LocalPosition: {x: 68.1, y: 3.83, z: -26.32}
+  m_LocalRotation: {x: 0.18875054, y: -0.6814494, z: 0.18875055, w: 0.6814493}
+  m_LocalPosition: {x: 68.1, y: 3.83, z: -12.699999}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3159,8 +3135,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2089683652}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.18875055, y: -0.68144935, z: 0.18875055, w: 0.68144935}
-  m_LocalPosition: {x: 68.1, y: 3.83, z: -26.32}
+  m_LocalRotation: {x: 0.18875054, y: -0.6814494, z: 0.18875055, w: 0.6814493}
+  m_LocalPosition: {x: 68.1, y: 3.83, z: -12.699999}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5731,7 +5707,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4094849368024335755, guid: 25e52409a555de647b401091076602a1, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -26.32
+      value: -12.7
       objectReference: {fileID: 0}
     - target: {fileID: 4094849368024335755, guid: 25e52409a555de647b401091076602a1, type: 3}
       propertyPath: m_LocalRotation.w

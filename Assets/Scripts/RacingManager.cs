@@ -6,10 +6,28 @@ using UnityEngine;
 [System.Serializable]
 public struct placingData
 {
-    public string carName;
+    public GameObject car;
     public int lapsDone;
     public int currentCheckpoint;
     public float distNextCp;
+    public int CompareTo(placingData other)
+    {
+        int result = lapsDone.CompareTo(other.lapsDone);
+
+        if (result != 0)
+        {
+            return -result;
+        }
+
+        result = currentCheckpoint.CompareTo(other.currentCheckpoint);
+
+        if (result != 0)
+        {
+            return -result;
+        }
+
+        return distNextCp.CompareTo(other.distNextCp);
+    }
 }
 
 public class RacingManager : MonoBehaviour
@@ -40,15 +58,18 @@ public class RacingManager : MonoBehaviour
 
     void FixedUpdate()
     {
+        // Better for memory if getting the data and sorting it happens every half-second.
+
+        // Get the car placements
         #region GetData
 
         placements.Clear();
 
-        // For each car, get their target waypoint and find the distance between them and it. 
+        // For each car, get their target waypoint and find the distance between them and it.
         foreach (Transform car in cars)
         {
             placingData thisCarData;
-            thisCarData.carName = car.name;
+            thisCarData.car = car.gameObject;
 
             // If the car is an AI...
             if (car.TryGetComponent<AI_Input>(out AI_Input AI_InputScript))
@@ -74,17 +95,27 @@ public class RacingManager : MonoBehaviour
 
                 placements.Add(thisCarData);
             }
-
-
         }
 
         #endregion
 
-        #region UseData
+        // Sort car order
+        placements.Sort((s1, s2) => s1.CompareTo(s2));
 
+    }
 
+    private void OnGUI()
+    {
+        // Background box
+        GUI.Box(new Rect(80, 300, 300, 140), "");
 
-        #endregion
+        int i = 0;
+
+        foreach(placingData entry in placements)
+        {
+            GUI.Label(new Rect(85, 305 + (15 * i), 300, 30), (i + 1) + " place: " + placements[i].car.name + " - Lap: " + (placements[i].lapsDone +1 ));
+            i++;
+        }
     }
 }
 
