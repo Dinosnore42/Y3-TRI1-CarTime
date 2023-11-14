@@ -24,7 +24,7 @@ public class AI_Input : MonoBehaviour
     public float steeringAcceptance;
     public float targetVelocity;
     public bool recover;
-    public int lapsFinished = 1;
+    public int lapsFinished = 0;
 
     // Start is called before the first frame update
     void Start()
