@@ -786,6 +786,8 @@ GameObject:
   - component: {fileID: 8890747523907464348}
   - component: {fileID: 6232029065109228008}
   - component: {fileID: 7263152008987364474}
+  - component: {fileID: 7884254598078532673}
+  - component: {fileID: 3063273693970729603}
   m_Layer: 6
   m_Name: Car
   m_TagString: Untagged
@@ -864,7 +866,7 @@ MonoBehaviour:
   maxSteeringAngle: 35
   engineRPM: 0
   gears:
-  - 2
+  - 3.2
   - 3.35
   - 1.93
   - 1.26
@@ -880,10 +882,10 @@ MonoBehaviour:
   ABS: 1
   braking: 0
   isPlayer: 0
-  fl: {fileID: 0}
-  fr: {fileID: 0}
-  bl: {fileID: 0}
-  br: {fileID: 0}
+  fl: {fileID: 9099972295821310297}
+  fr: {fileID: 3280633221940086030}
+  bl: {fileID: 6756306600930871769}
+  br: {fileID: 6928135429481260244}
 --- !u!114 &6232029065109228008
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -914,6 +916,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   car: {fileID: 4625715662483474405}
   body: {fileID: 490950153583410575}
+--- !u!114 &7884254598078532673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4625715662483474405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e56fc437e7d2afd47a062f8d2036f065, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hasWeapon: 0
+  ammo: 0
+--- !u!114 &3063273693970729603
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4625715662483474405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38f6d2c73416d2549b684a236fb4f2dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waypoints: []
+  waypointBundle: {fileID: 0}
+  waypointIndex: 0
+  target: {fileID: 0}
+  lapsFinished: 0
 --- !u!1 &5167280391929198087
 GameObject:
   m_ObjectHideFlags: 0

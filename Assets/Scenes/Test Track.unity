@@ -1072,23 +1072,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4094849368024335755, guid: 25e52409a555de647b401091076602a1, type: 3}
   m_PrefabInstance: {fileID: 5675202487084677592}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &624754571
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 60290274}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 38f6d2c73416d2549b684a236fb4f2dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  waypoints: []
-  waypointBundle: {fileID: 126948010}
-  waypointIndex: 0
-  target: {fileID: 0}
-  lapsFinished: 0
 --- !u!114 &624754576
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5713,6 +5696,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 3063273693970729603, guid: 25e52409a555de647b401091076602a1, type: 3}
+      propertyPath: waypointBundle
+      value: 
+      objectReference: {fileID: 126948010}
     - target: {fileID: 3181172633739049104, guid: 25e52409a555de647b401091076602a1, type: 3}
       propertyPath: m_Layer
       value: 6
@@ -5829,17 +5816,10 @@ PrefabInstance:
       propertyPath: fr
       value: 
       objectReference: {fileID: 1057677804}
-    - target: {fileID: 8890747523907464348, guid: 25e52409a555de647b401091076602a1, type: 3}
-      propertyPath: gears.Array.data[0]
-      value: 3.2
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4625715662483474405, guid: 25e52409a555de647b401091076602a1, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 624754571}
     - targetCorrespondingSourceObject: {fileID: 4625715662483474405, guid: 25e52409a555de647b401091076602a1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 624754576}
