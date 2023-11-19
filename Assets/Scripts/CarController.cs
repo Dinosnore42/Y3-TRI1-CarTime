@@ -18,16 +18,21 @@ public class CarController : MonoBehaviour
     public float maxMotorTorque; // Maximum torque the motor can apply to wheel
     public float maxSteeringAngle; // Maximum steer angle the wheel can have
     public float engineRPM; // Last RPM of the car
+
     public List<float> gears; // List of gear RPMs
     public int curGear = 1;
     public float gearVal;
+
     private Rigidbody rb;
+
     public float totalWheelRPM; // Total RPM of drive wheels
     public float freeWheelRPM; // Total RPM of non-driving wheels
     public float totalForwardSlip; // Total forward slip of all wheels
+
     public bool automaticGears = true;
     public bool tractionControl = true;
-    public bool ABS = true;
+    public bool antiLockBraking = true;
+
     public float braking;
     public bool isPlayer;
 
@@ -87,21 +92,21 @@ public class CarController : MonoBehaviour
             #region Toggles
 
             // Toggle automatic gears
-            if (Input.GetKeyDown("z"))
+            if (Input.GetKeyDown("1"))
             {
                 automaticGears = !automaticGears;
             }
 
             // Toggle traction control
-            if (Input.GetKeyDown("x"))
+            if (Input.GetKeyDown("2"))
             {
                 tractionControl = !tractionControl;
             }
 
             // Toggle ABS
-            if (Input.GetKeyDown("c"))
+            if (Input.GetKeyDown("3"))
             {
-                ABS = !ABS;
+                antiLockBraking = !antiLockBraking;
             }
 
             #endregion
@@ -184,7 +189,7 @@ public class CarController : MonoBehaviour
             #endregion
         }
         // If input direction and velocity direction don't match...
-        else if ((forwardVelocity >= 0 && vertical < 0) || (forwardVelocity <= 0 && vertical > 0))
+        else if (((forwardVelocity >= 0 && vertical < 0) || (forwardVelocity <= 0 && vertical > 0)))
         {
             // ...The car is braking
             braking = 10000; // Newton Meters
@@ -243,8 +248,9 @@ public class CarController : MonoBehaviour
 
             // Anti-Lock Braking
             // If the car is slipping when braking while travelling forwards or backwards, stop braking
-            if (ABS = true && braking != 0 && (totalForwardSlip >= 1f || totalForwardSlip <= -1f))
+            if ((antiLockBraking && braking > 0) && (totalForwardSlip >= 1f || totalForwardSlip <= -1f))
             {
+                Debug.Log("ABS ON");
                 axleInfo.leftWheel.brakeTorque = 0;
                 axleInfo.rightWheel.brakeTorque = 0;
             }

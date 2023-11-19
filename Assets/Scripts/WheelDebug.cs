@@ -35,41 +35,41 @@ public class WheelDebug : MonoBehaviour
         GUI.Label(new Rect(210, 105, 50, 50), ("Gear Ratio: " + thisCar.gearVal.ToString() + ":1"));
         GUI.Label(new Rect(270, 105, 50, 50), ("Speed: " + ((int)Mathf.Round(thisRb.velocity.magnitude * 2.237f)).ToString() + "mph"));
 
-        if (thisCar.tractionControl == true && (thisCar.totalForwardSlip >= 1f || thisCar.totalForwardSlip <= -1) && thisCar.braking == 0)
+        if ((thisCar.braking == 0 && thisCar.tractionControl) && (thisCar.totalForwardSlip >= 1f || thisCar.totalForwardSlip <= -1))
         {
             GUI.Label(new Rect(150, 70, 200, 50), ("TRACTION CONTROL ON"));
         }
 
-        if (thisCar.braking > 0 && (thisCar.totalForwardSlip >= 1f || thisCar.totalForwardSlip <= -1f))
+        if ((thisCar.braking > 0 && thisCar.antiLockBraking) && (thisCar.totalForwardSlip >= 1f || thisCar.totalForwardSlip <= -1f))
         {
             GUI.Label(new Rect(150, 85, 200, 50), ("ANTI-LOCK BRAKING ON"));
         }
 
-        if (thisCar.automaticGears == true)
+        if (thisCar.automaticGears)
         {
-            GUI.Label(new Rect(90, 230, 200, 50), ("Z: turn off automatic gears"));
+            GUI.Label(new Rect(90, 230, 200, 50), ("1: turn off automatic gears"));
         }
         else
         {
-            GUI.Label(new Rect(90, 230, 200, 50), ("Z: turn on automatic gears"));
+            GUI.Label(new Rect(90, 230, 200, 50), ("1: turn on automatic gears"));
         }
 
-        if (thisCar.tractionControl == true)
+        if (thisCar.tractionControl)
         {
-            GUI.Label(new Rect(90, 245, 200, 50), ("X: turn off traction control"));
+            GUI.Label(new Rect(90, 245, 200, 50), ("2: turn off traction control"));
         }
         else
         {
-            GUI.Label(new Rect(90, 245, 200, 50), ("X: turn on traction control"));
+            GUI.Label(new Rect(90, 245, 200, 50), ("2: turn on traction control"));
         }
 
-        if (thisCar.ABS == true)
+        if (thisCar.antiLockBraking)
         {
-            GUI.Label(new Rect(90, 260, 200, 50), ("C: turn off anti-lock braking"));
+            GUI.Label(new Rect(90, 260, 200, 50), ("3: turn off anti-lock braking"));
         }
         else
         {
-            GUI.Label(new Rect(90, 260, 200, 50), ("C: turn on anti-lock braking"));
+            GUI.Label(new Rect(90, 260, 200, 50), ("3: turn on anti-lock braking"));
         }
     }
 

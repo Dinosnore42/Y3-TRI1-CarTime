@@ -1541,7 +1541,7 @@ MonoBehaviour:
   totalForwardSlip: 0
   automaticGears: 1
   tractionControl: 1
-  ABS: 1
+  enabledABS: 1
   braking: 0
   isPlayer: 0
   fl: {fileID: 3447298934739331348}
