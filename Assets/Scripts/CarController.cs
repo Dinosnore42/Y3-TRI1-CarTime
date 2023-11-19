@@ -250,7 +250,6 @@ public class CarController : MonoBehaviour
             // If the car is slipping when braking while travelling forwards or backwards, stop braking
             if ((antiLockBraking && braking > 0) && (totalForwardSlip >= 1f || totalForwardSlip <= -1f))
             {
-                Debug.Log("ABS ON");
                 axleInfo.leftWheel.brakeTorque = 0;
                 axleInfo.rightWheel.brakeTorque = 0;
             }

@@ -141,7 +141,7 @@ public class AI_Input : MonoBehaviour
 
                 // Brake if car ahead is braking
                 // Length is up to two car lengths from the front of this car. Width is 2 cars' width.
-                if (offset.z >= 3 && offset.z <= 15 && offset.x >= -2.4 && offset.x <= 2.4 && -relativeVelocity.x < 0)
+                if (offset.z >= 3 && offset.z <= 15 && offset.x >= -2.4 && offset.x <= 2.4 && relativeVelocity.x > 0)
                 {
                     vertical = -1f;
                 }
