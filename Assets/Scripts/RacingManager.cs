@@ -101,7 +101,6 @@ public class RacingManager : MonoBehaviour
 
         // Sort car order
         placements.Sort((s1, s2) => s1.CompareTo(s2));
-
     }
 
     private void OnGUI()

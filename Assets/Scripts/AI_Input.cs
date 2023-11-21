@@ -69,25 +69,25 @@ public class AI_Input : MonoBehaviour
         // Steer right, towards a waypoint
         if (angle < -steeringAcceptance)
         {
-            horizontal += 0.9f;
+            horizontal += 0.8f;
         }
 
         // Steer left, towards a waypoint
         if (angle > steeringAcceptance)
         {
-            horizontal -= 0.9f;
+            horizontal -= 0.8f;
         }
 
         // If a wall is on the left, go right
         var leftRay = new Ray(this.transform.position, -this.transform.right + transform.forward);
-        if (Physics.Raycast(leftRay, out hit, 10f) && hit.collider.tag == "Wall")    // Use layers to not hit certain things
+        if (Physics.Raycast(leftRay, out hit, 7.5f) && hit.collider.tag == "Wall")    // Use layers to not hit certain things
         {
             horizontal += 1f;
         }
 
         // If wall is on the right, go left
         var rightRay = new Ray(this.transform.position, this.transform.right + transform.forward);
-        if (Physics.Raycast(rightRay, out hit, 10f) && hit.collider.tag == "Wall")
+        if (Physics.Raycast(rightRay, out hit, 7.5f) && hit.collider.tag == "Wall")
         {
             horizontal += -1f;
         }
@@ -98,6 +98,12 @@ public class AI_Input : MonoBehaviour
 
         // Get the waypoint's target velocity
         targetVelocity = target.transform.localScale.x;
+
+        // If this is the carat the front, travel slower, allowing the rest of the pack to catch up
+        if (gameObject == waypointBundle.GetComponent<RacingManager>().placements[0].car)
+        {
+            targetVelocity -= 5;
+        }
 
         // If the car has hit a wall, reverse
         var forRay = new Ray(this.transform.position, this.transform.forward);
@@ -134,7 +140,7 @@ public class AI_Input : MonoBehaviour
             if (trueCar.name != this.name)
             {
                 Vector3 offset = transform.InverseTransformDirection(trueCar.transform.position - this.transform.position);
-                Vector3 relativeVelocity = trueCar.GetComponent<Rigidbody>().velocity - rb.velocity;
+                Vector3 relativeVelocity = rb.velocity - trueCar.GetComponent<Rigidbody>().velocity;
 
                 // Offset:              x is lateral, z is forward/backward
                 // Relative Velocity:   -x is forwards
@@ -143,23 +149,23 @@ public class AI_Input : MonoBehaviour
                 // Length is up to two car lengths from the front of this car. Width is 2 cars' width.
                 if (offset.z >= 3 && offset.z <= 15 && offset.x >= -2.4 && offset.x <= 2.4 && relativeVelocity.x > 0)
                 {
-                    vertical = -1f;
+                    vertical = -0.5f;
                 }
 
                 // Lateral avoidance
                 // Length is the car's length, plus another car in front of it. Width is 4 cars' width.
 
                 // Left side detected, steer right
-                if (offset.x >= -4.8 && offset.x < 0 && offset.z >= -3 && offset.z <= 9)
+                if (offset.x >= -4.8 && offset.x < 0 && offset.z >= -3 && offset.z <= 12)
                 {
                     //Debug.Log(this.name + " seeing " + trueCar.name + " on the left");
-                    horizontal += 0.7f;
+                    horizontal += 0.5f;
                 }
                 // Right side detected, steer left
-                if (offset.x > 0 && offset.x <= 4.8 && offset.z >= -3 && offset.z <= 9)
+                if (offset.x > 0 && offset.x <= 4.8 && offset.z >= -3 && offset.z <= 12)
                 {
                     //Debug.Log(this.name + " seeing " + trueCar.name + " on the right");
-                    horizontal -= 0.7f;
+                    horizontal -= 0.5f;
                 }
             }
         }
@@ -207,8 +213,8 @@ public class AI_Input : MonoBehaviour
     {
         if (Application.isPlaying)
         {
-            Gizmos.DrawRay(this.transform.position, (-this.transform.right + transform.forward).normalized * 10f);
-            Gizmos.DrawRay(this.transform.position, (this.transform.right + transform.forward).normalized * 10f);
+            Gizmos.DrawRay(this.transform.position, (-this.transform.right + transform.forward).normalized * 7.5f);
+            Gizmos.DrawRay(this.transform.position, (this.transform.right + transform.forward).normalized * 7.5f);
             Gizmos.color = Color.red;
             Gizmos.DrawRay(this.transform.position, transform.forward.normalized * 6f);
             Gizmos.DrawWireSphere(target.position, 19f);
