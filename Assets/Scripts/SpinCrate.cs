@@ -13,6 +13,6 @@ public class SpinCrate : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Rotate(0f, 0.1f, 0f * Time.deltaTime);
+        transform.Rotate(0f, 0.2f, 0f * Time.deltaTime);
     }
 }
