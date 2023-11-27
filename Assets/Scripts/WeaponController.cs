@@ -57,7 +57,7 @@ public class WeaponController : MonoBehaviour
             {
                 weapon = Instantiate(Resources.Load("Gun", typeof(GameObject)) as GameObject, weaponMount);
                 ammo = 10;
-                firingDelay = 0.25f;
+                firingDelay = 0.1f;
             }
 
             // Missile
@@ -65,7 +65,7 @@ public class WeaponController : MonoBehaviour
             {
                 weapon = Instantiate(Resources.Load("Rocket Launcher", typeof(GameObject)) as GameObject, weaponMount);
                 ammo = 4;
-                firingDelay = 0.75f;
+                firingDelay = 0.5f;
             }
 
             // Lightning Rod

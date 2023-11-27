@@ -25,6 +25,9 @@ public class AI_Input : MonoBehaviour
     public float targetVelocity;
     public bool recover;
     public int lapsFinished = 0;
+    public GameObject mainBooster;
+    public GameObject leftBooster;
+    public GameObject rightBooster;
 
     // Start is called before the first frame update
     void Start()
@@ -208,6 +211,52 @@ public class AI_Input : MonoBehaviour
         }
 
         aiCar.InputResponse(vertical, horizontal);
+
+        #endregion
+
+        #region BoosterVFX
+
+        // Forwards
+
+        float boosterSize = vertical;
+
+        // Stop booster from firing into car when it reverses
+        if (boosterSize < 0)
+        {
+            boosterSize = 0;
+        }
+
+        mainBooster.transform.localScale = new Vector3(1f * boosterSize, 1.5f * boosterSize, 1f * boosterSize);
+
+        // Left/right
+
+        boosterSize = horizontal;
+
+        // Stop booster from firing into car when it goes left
+        if (boosterSize < 0)
+        {
+            boosterSize = -boosterSize;
+        }
+
+        // If going left, fire opposite booster. If not, turn it off.
+        if (horizontal < 0 && vertical >= 0)
+        {
+            rightBooster.transform.localScale = new Vector3(0.5f * boosterSize, 0.75f * boosterSize, 0.5f * boosterSize);
+        }
+        else
+        {
+            rightBooster.transform.localScale = new Vector3(0, 0, 0);
+        }
+
+        // If going right, fire opposite booster. If not, turn it off.
+        if (horizontal > 0 && vertical >= 0)
+        {
+            leftBooster.transform.localScale = new Vector3(0.5f * boosterSize, 0.75f * boosterSize, 0.5f * boosterSize);
+        }
+        else
+        {
+            leftBooster.transform.localScale = new Vector3(0, 0, 0);
+        }
 
         #endregion
 
