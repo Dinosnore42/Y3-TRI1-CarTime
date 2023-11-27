@@ -5,12 +5,15 @@ using UnityEngine;
 public class WeaponController : MonoBehaviour
 {
     private Transform weaponMount;
+    public int weapNum;
     public bool hasWeapon = false;
     public int ammo;
     GameObject weapon;
     public float firingDelay;
     public bool canFire = true;
     public bool canRotate;
+    public float weaponDamage;
+    public GameObject waypointBundle;
 
     private void Awake()
     {
@@ -27,26 +30,39 @@ public class WeaponController : MonoBehaviour
         }
     }
 
+    // Make the weapon look at the next target
     public void lookAtTarget(GameObject target)
     {
         if (canRotate)
         {
-            // Make the weapon look at the next target
             weapon.transform.LookAt(target.transform);
         }
     }
 
+    // If the controller's weapon has ammo, fire it. No need to check for having a weapon in the first place due to Player and AI checking that.
     public void fireWeapon()
     {
-        // If the controller's weapon has ammo, fire it. No need to check for having a weapon in the first place due to Player and AI checking that.
         if (ammo > 0 && canFire)
         {
+            if (weapNum == 1)
+            {
+                
+            }
+            else if (weapNum == 2)
+            {
+
+            }
+            else if(weapNum == 3)
+            {
+                FireLightningRod();
+            }
+
             ammo--;
             StartCoroutine(delayFire(firingDelay));
         }
     }
 
-    // Delay script to stop instant mag-dumping from players + AI
+    // Delay script to stop instant expenditure of all ammo.
     private IEnumerator delayFire(float holdTime)
     {
         canFire = false;
@@ -60,7 +76,7 @@ public class WeaponController : MonoBehaviour
         if (!hasWeapon)
         {
             hasWeapon = true;
-            int weapNum = Random.Range(1, 4);
+            weapNum = Random.Range(1, 4);
 
             // Gun
             if (weapNum == 1)
@@ -69,6 +85,7 @@ public class WeaponController : MonoBehaviour
                 ammo = 10;
                 firingDelay = 0.2f;
                 canRotate = true;
+                weaponDamage = 0.5f;
             }
 
             // Missile
@@ -78,6 +95,7 @@ public class WeaponController : MonoBehaviour
                 ammo = 4;
                 firingDelay = 0.5f;
                 canRotate = true;
+                weaponDamage = 4f;
             }
 
             // Lightning Rod
@@ -88,6 +106,25 @@ public class WeaponController : MonoBehaviour
                 firingDelay = 0.1f;
                 canRotate = false;
                 weapon.transform.localEulerAngles = new Vector3(0f, -90f, 45f);
+                weaponDamage = 10f;
+            }
+        }
+    }
+
+    public void FireLightningRod()
+    {
+        List<placingData> positions = waypointBundle.GetComponent<RacingManager>().placements;
+
+        foreach (placingData vehicle in positions)
+        {
+            // Deal the damage
+            if(vehicle.car.TryGetComponent(out PlayerInput playerScript))
+            {
+                playerScript.damagePenalty += weaponDamage;
+            }
+            else
+            {
+                vehicle.car.GetComponent<AI_Input>().damagePenalty += weaponDamage;
             }
         }
     }

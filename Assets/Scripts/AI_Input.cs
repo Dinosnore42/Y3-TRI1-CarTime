@@ -30,6 +30,7 @@ public class AI_Input : MonoBehaviour
     public GameObject rightBooster;
     private GameObject aimTarget;
     private bool aimDirectionFront = true;
+    public float damagePenalty;
 
     // Start is called before the first frame update
     void Start()
