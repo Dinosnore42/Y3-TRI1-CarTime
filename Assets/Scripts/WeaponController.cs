@@ -117,14 +117,21 @@ public class WeaponController : MonoBehaviour
 
         foreach (placingData vehicle in positions)
         {
-            // Deal the damage
-            if(vehicle.car.TryGetComponent(out PlayerInput playerScript))
+            if (vehicle.car != this.gameObject)
             {
-                playerScript.damagePenalty += weaponDamage;
-            }
-            else
-            {
-                vehicle.car.GetComponent<AI_Input>().damagePenalty += weaponDamage;
+                // Deal the damage
+                if (vehicle.car.TryGetComponent(out PlayerInput playerScript))
+                {
+                    playerScript.damagePenalty += weaponDamage;
+                }
+                else
+                {
+                    vehicle.car.GetComponent<AI_Input>().damagePenalty += weaponDamage;
+                }
+
+                // Bolt effect
+                GameObject bolt = Instantiate(Resources.Load("Lightning Bolt", typeof(GameObject)) as GameObject, vehicle.car.transform);
+                Destroy(bolt, 1f);
             }
         }
     }
