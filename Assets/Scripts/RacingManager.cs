@@ -59,6 +59,12 @@ public class RacingManager : MonoBehaviour
     void FixedUpdate()
     {
         // Better for memory if getting the data and sorting it happens every half-second.
+        StartCoroutine(placementsUpdate(0.5f));
+    }
+
+    private IEnumerator placementsUpdate(float updateDelay)
+    {
+        yield return new WaitForSeconds(updateDelay);
 
         // Get the car placements
         #region GetData

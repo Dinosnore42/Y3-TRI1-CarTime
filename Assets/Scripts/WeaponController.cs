@@ -67,7 +67,7 @@ public class WeaponController : MonoBehaviour
             {
                 weapon = Instantiate(Resources.Load("Gun", typeof(GameObject)) as GameObject, weaponMount);
                 ammo = 10;
-                firingDelay = 0.1f;
+                firingDelay = 0.2f;
                 canRotate = true;
             }
 

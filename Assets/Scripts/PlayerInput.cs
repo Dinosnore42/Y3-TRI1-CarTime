@@ -99,7 +99,7 @@ public class PlayerInput : MonoBehaviour
 
         #region Shooting
 
-        #region Aquire target
+        #region Acquire target
 
         // Choose target direction
         if (Input.GetKeyDown(KeyCode.UpArrow))
