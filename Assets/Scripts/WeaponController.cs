@@ -7,9 +7,10 @@ public class WeaponController : MonoBehaviour
     private Transform weaponMount;
     public bool hasWeapon = false;
     public int ammo;
+    GameObject weapon;
     public float firingDelay;
     public bool canFire = true;
-    GameObject weapon;
+    public bool canRotate;
 
     private void Awake()
     {
@@ -23,6 +24,15 @@ public class WeaponController : MonoBehaviour
         {
             Destroy(weapon);
             hasWeapon = false;
+        }
+    }
+
+    public void lookAtTarget(GameObject target)
+    {
+        if (canRotate)
+        {
+            // Make the weapon look at the next target
+            weapon.transform.LookAt(target.transform);
         }
     }
 
@@ -58,6 +68,7 @@ public class WeaponController : MonoBehaviour
                 weapon = Instantiate(Resources.Load("Gun", typeof(GameObject)) as GameObject, weaponMount);
                 ammo = 10;
                 firingDelay = 0.1f;
+                canRotate = true;
             }
 
             // Missile
@@ -66,6 +77,7 @@ public class WeaponController : MonoBehaviour
                 weapon = Instantiate(Resources.Load("Rocket Launcher", typeof(GameObject)) as GameObject, weaponMount);
                 ammo = 4;
                 firingDelay = 0.5f;
+                canRotate = true;
             }
 
             // Lightning Rod
@@ -74,6 +86,8 @@ public class WeaponController : MonoBehaviour
                 weapon = Instantiate(Resources.Load("Lightning Rod", typeof(GameObject)) as GameObject, weaponMount);
                 ammo = 1;
                 firingDelay = 0.1f;
+                canRotate = false;
+                weapon.transform.localEulerAngles = new Vector3(0f, -90f, 45f);
             }
         }
     }

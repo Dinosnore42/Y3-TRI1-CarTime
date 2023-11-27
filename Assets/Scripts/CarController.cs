@@ -75,13 +75,13 @@ public class CarController : MonoBehaviour
             if (automaticGears == false)
             {
                 // Gear shifts up
-                if (Input.GetKeyDown(KeyCode.UpArrow) && curGear < 5 && automaticGears == false)
+                if (Input.GetKeyDown(KeyCode.RightArrow) && curGear < 5 && automaticGears == false)
                 {
                     curGear++;
                 }
 
                 // Gear shifts down
-                if (Input.GetKeyDown(KeyCode.DownArrow) && curGear > 1 && automaticGears == false)
+                if (Input.GetKeyDown(KeyCode.LeftArrow) && curGear > 1 && automaticGears == false)
                 {
                     curGear--;
                 }

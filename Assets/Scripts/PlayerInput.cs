@@ -16,6 +16,8 @@ public class PlayerInput : MonoBehaviour
     public GameObject mainBooster;
     public GameObject leftBooster;
     public GameObject rightBooster;
+    private GameObject aimTarget;
+    private bool aimDirectionFront = true;
 
     // Start is called before the first frame update
     void Start()
@@ -96,6 +98,57 @@ public class PlayerInput : MonoBehaviour
         #endregion
 
         #region Shooting
+
+        #region Aquire target
+
+        // Choose target direction
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            aimDirectionFront = true;
+        }
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            aimDirectionFront = false;
+        }
+
+        // Find the target
+        int i = 0;
+
+        List<placingData> positions = waypointBundle.GetComponent<RacingManager>().placements;
+
+        foreach (placingData vehicle in positions)
+        {
+            if (vehicle.car == this.gameObject)
+            {
+                // If in first, override target to be car behind, and vice versa for in last.
+                if (i == 0)
+                {
+                    aimDirectionFront = false;
+                }
+                else if (i == positions.Count -1)
+                {
+                    aimDirectionFront = true;
+                }
+
+                // Target is the person in front/behind
+                if (aimDirectionFront)
+                {
+                    aimTarget = positions[i - 1].car;
+                }
+                else
+                {
+                    aimTarget = positions[i + 1].car;
+                }
+            }
+            else
+            {
+                i++;
+            }
+        }
+
+        playerWeapons.lookAtTarget(aimTarget);
+
+        #endregion
 
         // If the player has a weapon, then allow it to fire it
         if (Input.GetButton("Fire1") && playerWeapons.hasWeapon)
