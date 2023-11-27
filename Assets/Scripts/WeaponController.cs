@@ -17,7 +17,7 @@ public class WeaponController : MonoBehaviour
     void FixedUpdate()
     {
         // If a car has a weapon that's out of ammo, destroy it.
-        if (ammo == 0 && weaponMount.childCount > 0)
+        if (ammo <= 0 && weaponMount.childCount > 0)
         {
             Destroy(weapon);
             hasWeapon = false;
@@ -30,7 +30,7 @@ public class WeaponController : MonoBehaviour
         if (!hasWeapon)
         {
             hasWeapon = true;
-            int weapNum = 1; //Random.RandomRange(1, 3);
+            int weapNum = Random.Range(1, 4);
 
             // Gun
             if (weapNum == 1)
@@ -42,13 +42,15 @@ public class WeaponController : MonoBehaviour
             // Missile
             else if (weapNum == 2)
             {
-
+                weapon = Instantiate(Resources.Load("Rocket Launcher", typeof(GameObject)) as GameObject, weaponMount);
+                ammo = 4;
             }
 
             // Lightning Rod
-            else
+            else if(weapNum == 3)
             {
-
+                weapon = Instantiate(Resources.Load("Lightning Rod", typeof(GameObject)) as GameObject, weaponMount);
+                ammo = 1;
             }
         }
     }
