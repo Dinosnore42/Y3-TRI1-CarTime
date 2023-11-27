@@ -45,6 +45,8 @@ public class AI_Input : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        #region Driving
+
         horizontal = 0;
         RaycastHit hit;
 
@@ -206,6 +208,18 @@ public class AI_Input : MonoBehaviour
         }
 
         aiCar.InputResponse(vertical, horizontal);
+
+        #endregion
+
+        #region Shooting
+
+        // If the AI has a weapon, then allow it to fire it
+        if (aiWeapons.hasWeapon)
+        {
+            aiWeapons.fireWeapon();
+        }
+
+        #endregion
     }
 
     // See raycasts

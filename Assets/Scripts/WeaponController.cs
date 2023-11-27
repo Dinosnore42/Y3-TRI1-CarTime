@@ -7,6 +7,8 @@ public class WeaponController : MonoBehaviour
     private Transform weaponMount;
     public bool hasWeapon = false;
     public int ammo;
+    public float firingDelay;
+    public bool canFire = true;
     GameObject weapon;
 
     private void Awake()
@@ -24,6 +26,24 @@ public class WeaponController : MonoBehaviour
         }
     }
 
+    public void fireWeapon()
+    {
+        // If the controller's weapon has ammo, fire it. No need to check for having a weapon in the first place due to Player and AI checking that.
+        if (ammo > 0 && canFire)
+        {
+            ammo--;
+            StartCoroutine(delayFire(firingDelay));
+        }
+    }
+
+    // Delay script to stop instant mag-dumping from players + AI
+    private IEnumerator delayFire(float holdTime)
+    {
+        canFire = false;
+        yield return new WaitForSeconds(holdTime);
+        canFire = true;
+    }
+
     public void WeaponSelect()
     {
         // Check if a player doesn't already have a weapon
@@ -37,6 +57,7 @@ public class WeaponController : MonoBehaviour
             {
                 weapon = Instantiate(Resources.Load("Gun", typeof(GameObject)) as GameObject, weaponMount);
                 ammo = 10;
+                firingDelay = 0.25f;
             }
 
             // Missile
@@ -44,6 +65,7 @@ public class WeaponController : MonoBehaviour
             {
                 weapon = Instantiate(Resources.Load("Rocket Launcher", typeof(GameObject)) as GameObject, weaponMount);
                 ammo = 4;
+                firingDelay = 0.75f;
             }
 
             // Lightning Rod
@@ -51,6 +73,7 @@ public class WeaponController : MonoBehaviour
             {
                 weapon = Instantiate(Resources.Load("Lightning Rod", typeof(GameObject)) as GameObject, weaponMount);
                 ammo = 1;
+                firingDelay = 0.1f;
             }
         }
     }

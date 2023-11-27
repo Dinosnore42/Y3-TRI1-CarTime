@@ -33,6 +33,8 @@ public class PlayerInput : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        #region Driving
+
         // Check if waypoint is reached
         if (Vector3.Distance(transform.position, target.position) <= 20)
         {
@@ -41,6 +43,18 @@ public class PlayerInput : MonoBehaviour
         }
 
         playerCar.InputResponse(Input.GetAxis("Vertical"), Input.GetAxis("Horizontal"));
+
+        #endregion
+
+        #region Shooting
+
+        // If the player has a weapon, then allow it to fire it
+        if (Input.GetButton("Fire1") && playerWeapons.hasWeapon)
+        {
+            playerWeapons.fireWeapon();
+        }
+
+        #endregion
     }
 
     // Set destination to the next waypoint
