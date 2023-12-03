@@ -33,7 +33,7 @@ public class WeaponController : MonoBehaviour
     // Make the weapon look at the next target
     public void lookAtTarget(GameObject target)
     {
-        if (canRotate)
+        if (hasWeapon && canRotate)
         {
             weapon.transform.LookAt(target.transform);
         }
@@ -70,6 +70,7 @@ public class WeaponController : MonoBehaviour
         canFire = true;
     }
 
+    // Rolls a random weapon and changes parameters to match it
     public void WeaponSelect()
     {
         // Check if a player doesn't already have a weapon
@@ -148,7 +149,7 @@ public class WeaponController : MonoBehaviour
     {
         // Create a bullet at the barrel of the gun, and give it a velocity
         GameObject bullet = Instantiate(Resources.Load("Bullet", typeof(GameObject)) as GameObject, weaponMount.GetChild(0).GetChild(0));
-        bullet.GetComponent<Rigidbody>().velocity = bullet.transform.TransformDirection(Vector3.forward * 200);
+        bullet.GetComponent<Rigidbody>().velocity = bullet.transform.TransformDirection(Vector3.forward * 150);
 
         // Tell the bullet it came from here so it can pass back what to damage if it hits a car
         bullet.GetComponent<BulletLifetime>().creator = this;
