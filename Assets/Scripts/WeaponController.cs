@@ -46,7 +46,7 @@ public class WeaponController : MonoBehaviour
         {
             if (weapNum == 1)
             {
-                
+                FireGun();
             }
             else if (weapNum == 2)
             {
@@ -76,13 +76,13 @@ public class WeaponController : MonoBehaviour
         if (!hasWeapon)
         {
             hasWeapon = true;
-            weapNum = Random.Range(1, 4);
+            weapNum = 1;//Random.Range(1, 4);
 
             // Gun
             if (weapNum == 1)
             {
                 weapon = Instantiate(Resources.Load("Gun", typeof(GameObject)) as GameObject, weaponMount);
-                ammo = 10;
+                ammo = 100;
                 firingDelay = 0.2f;
                 canRotate = true;
                 weaponDamage = 0.5f;
@@ -134,5 +134,12 @@ public class WeaponController : MonoBehaviour
                 Destroy(bolt, 1f);
             }
         }
+    }
+
+    public void FireGun()
+    {
+        GameObject bullet = Instantiate(Resources.Load("Bullet", typeof(GameObject)) as GameObject, weaponMount.GetChild(0).GetChild(0));
+        bullet.GetComponent<Rigidbody>().velocity = bullet.transform.TransformDirection(Vector3.forward * 200);
+        bullet.transform.parent = null;
     }
 }
