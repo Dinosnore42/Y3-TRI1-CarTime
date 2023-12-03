@@ -192,7 +192,12 @@ public class CarController : MonoBehaviour
         else if (((forwardVelocity >= 0 && vertical < 0) || (forwardVelocity <= 0 && vertical > 0)))
         {
             // ...The car is braking
-            braking = 10000; // Newton Meters
+            braking = 100000; // Newton Meters
+        }
+        // If nothing is pressed, start to slow car (drag)
+        else if (vertical == 0)
+        {
+            braking = 10;
         }
 
         // Rev Limiter 

@@ -77,13 +77,13 @@ public class AI_Input : MonoBehaviour
         // Steer right, towards a waypoint
         if (angle < -steeringAcceptance)
         {
-            horizontal += 0.8f;
+            horizontal += 0.7f;
         }
 
         // Steer left, towards a waypoint
         if (angle > steeringAcceptance)
         {
-            horizontal -= 0.8f;
+            horizontal -= 0.7f;
         }
 
         // If a wall is on the left, go right
@@ -110,12 +110,12 @@ public class AI_Input : MonoBehaviour
         // If this is the car at the front, travel slower, allowing the rest of the pack to catch up
         if (gameObject == waypointBundle.GetComponent<RacingManager>().placements[0].car)
         {
-            targetVelocity -= 5;
+            targetVelocity -= 4;
         }
 
         // If the car has hit a wall, reverse
         var forRay = new Ray(this.transform.position, this.transform.forward);
-        if (Physics.Raycast(forRay, out hit, 12f) && hit.collider.tag == "Wall")    // Use layers to not hit certain things
+        if (Physics.Raycast(forRay, out hit, 7.5f) && hit.collider.tag == "Wall")    // Use layers to not hit certain things
         {
             recover = true;
         }
@@ -154,12 +154,12 @@ public class AI_Input : MonoBehaviour
                 // Offset:              x is lateral, z is forward/backward
                 // Relative Velocity:   -x is forwards
 
-                //// Brake if car ahead is braking
-                //// Length is up to two car lengths from the front of this car. Width is 2 cars' width.
-                //if (offset.z >= 3 && offset.z <= 15 && offset.x >= -2.4 && offset.x <= 2.4 && relativeVelocity.x > 0)
-                //{
-                //    vertical = -0.5f;
-                //}
+                // Stop acceleration if car ahead is braking. In combination with steering away froma car ahead, this should allow for easier overtaking
+                // Length is up to two car lengths from the front of this car. Width is 2 cars' width.
+                if (offset.z >= 3 && offset.z <= 15 && offset.x >= -2.4 && offset.x <= 2.4 && relativeVelocity.x > 0)
+                {
+                    vertical = -0.05f;
+                }
 
                 // Lateral avoidance
                 // Length is the car's length, plus another car in front of it. Width is 4 cars' width.
@@ -330,7 +330,7 @@ public class AI_Input : MonoBehaviour
             Gizmos.DrawRay(this.transform.position, (-this.transform.right + transform.forward).normalized * 7.5f);
             Gizmos.DrawRay(this.transform.position, (this.transform.right + transform.forward).normalized * 7.5f);
             Gizmos.color = Color.red;
-            Gizmos.DrawRay(this.transform.position, transform.forward.normalized * 12f);
+            Gizmos.DrawRay(this.transform.position, transform.forward.normalized * 7.5f);
             Gizmos.DrawWireSphere(target.position, 19f);
             Gizmos.color = Color.magenta;
             Gizmos.DrawWireSphere(this.transform.position, 20f);

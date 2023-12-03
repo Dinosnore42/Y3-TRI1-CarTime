@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Wall
   - WeaponPickup
+  - Car
   layers:
   - Default
   - TransparentFX

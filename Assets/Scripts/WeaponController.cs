@@ -77,7 +77,7 @@ public class WeaponController : MonoBehaviour
         if (!hasWeapon)
         {
             hasWeapon = true;
-            weapNum = 1;//Random.Range(1, 4);
+            weapNum = Random.Range(1, 4);
 
             // Gun
             if (weapNum == 1)
