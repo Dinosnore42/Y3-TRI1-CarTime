@@ -19,7 +19,7 @@ public class BulletLifetime : MonoBehaviour
 
         if (hitObject.tag == "Car")
         {
-            creator.DealDamage(collision.transform.gameObject);
+            creator.DealDamage(hitObject);
         }
 
         Destroy(gameObject);

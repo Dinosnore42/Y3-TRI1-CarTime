@@ -115,7 +115,7 @@ public class AI_Input : MonoBehaviour
 
         // If the car has hit a wall, reverse
         var forRay = new Ray(this.transform.position, this.transform.forward);
-        if (Physics.Raycast(forRay, out hit, 7.5f) && hit.collider.tag == "Wall")    // Use layers to not hit certain things
+        if (Physics.Raycast(forRay, out hit, 9f) && hit.collider.tag == "Wall")    // Use layers to not hit certain things
         {
             recover = true;
         }
@@ -309,7 +309,7 @@ public class AI_Input : MonoBehaviour
             }
         }
 
-        aiWeapons.lookAtTarget(aimTarget);
+        aiWeapons.target = aimTarget;
 
         #endregion
 
@@ -330,7 +330,7 @@ public class AI_Input : MonoBehaviour
             Gizmos.DrawRay(this.transform.position, (-this.transform.right + transform.forward).normalized * 7.5f);
             Gizmos.DrawRay(this.transform.position, (this.transform.right + transform.forward).normalized * 7.5f);
             Gizmos.color = Color.red;
-            Gizmos.DrawRay(this.transform.position, transform.forward.normalized * 7.5f);
+            Gizmos.DrawRay(this.transform.position, transform.forward.normalized * 9f);
             Gizmos.DrawWireSphere(target.position, 19f);
             Gizmos.color = Color.magenta;
             Gizmos.DrawWireSphere(this.transform.position, 20f);

@@ -14,6 +14,7 @@ public class WeaponController : MonoBehaviour
     public bool canRotate;
     public float weaponDamage;
     public GameObject waypointBundle;
+    public GameObject target;
 
     private void Awake()
     {
@@ -28,11 +29,8 @@ public class WeaponController : MonoBehaviour
             Destroy(weapon);
             hasWeapon = false;
         }
-    }
 
-    // Make the weapon look at the next target
-    public void lookAtTarget(GameObject target)
-    {
+        // Make the weapon look at the next target
         if (hasWeapon && canRotate)
         {
             weapon.transform.LookAt(target.transform);
@@ -50,7 +48,7 @@ public class WeaponController : MonoBehaviour
             }
             else if (weapNum == 2)
             {
-
+                FireMissile();
             }
             else if(weapNum == 3)
             {
@@ -86,7 +84,7 @@ public class WeaponController : MonoBehaviour
                 ammo = 20;
                 firingDelay = 0.2f;
                 canRotate = true;
-                weaponDamage = 0.25f;
+                weaponDamage = 0.2f;
             }
 
             // Missile
@@ -96,7 +94,7 @@ public class WeaponController : MonoBehaviour
                 ammo = 4;
                 firingDelay = 0.5f;
                 canRotate = true;
-                weaponDamage = 4f;
+                weaponDamage = 1f;
             }
 
             // Lightning Rod
@@ -107,7 +105,7 @@ public class WeaponController : MonoBehaviour
                 firingDelay = 0.1f;
                 canRotate = false;
                 weapon.transform.localEulerAngles = new Vector3(0f, -90f, 45f);
-                weaponDamage = 10f;
+                weaponDamage = 8f;
             }
         }
     }
@@ -156,5 +154,18 @@ public class WeaponController : MonoBehaviour
 
         // Detach from parent to stop it from moving with the gun
         bullet.transform.parent = null;
+    }
+
+    public void FireMissile()
+    {
+        // Get the next missile
+        GameObject missile = weapon.transform.GetChild(0).gameObject;
+
+        // Tell the missile it came from here and what its target is, so it can pass back what to damage if it hits a car
+        missile.GetComponent<Missile>().creator = this;
+        missile.GetComponent<Missile>().missileTarget = target;
+
+        // Fire the missile
+        missile.GetComponent<Missile>().MissileFired();
     }
 }

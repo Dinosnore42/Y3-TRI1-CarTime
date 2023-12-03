@@ -147,7 +147,7 @@ public class PlayerInput : MonoBehaviour
             }
         }
 
-        playerWeapons.lookAtTarget(aimTarget);
+        playerWeapons.target = aimTarget;
 
         #endregion
 
