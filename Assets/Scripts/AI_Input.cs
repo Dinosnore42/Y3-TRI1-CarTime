@@ -107,7 +107,7 @@ public class AI_Input : MonoBehaviour
         // Get the waypoint's target velocity
         targetVelocity = target.transform.localScale.x;
 
-        // If this is the carat the front, travel slower, allowing the rest of the pack to catch up
+        // If this is the car at the front, travel slower, allowing the rest of the pack to catch up
         if (gameObject == waypointBundle.GetComponent<RacingManager>().placements[0].car)
         {
             targetVelocity -= 5;
@@ -115,12 +115,13 @@ public class AI_Input : MonoBehaviour
 
         // If the car has hit a wall, reverse
         var forRay = new Ray(this.transform.position, this.transform.forward);
-        if (Physics.Raycast(forRay, out hit, 6f) && hit.collider.tag == "Wall")    // Use layers to not hit certain things
+        if (Physics.Raycast(forRay, out hit, 12f) && hit.collider.tag == "Wall")    // Use layers to not hit certain things
         {
             recover = true;
         }
         else
         {
+            recover = false;
             // If the car is above a waypoint's target velocity, brake...
             if (targetVelocity < (rb.velocity.magnitude * 2.237f))
             {
@@ -153,12 +154,12 @@ public class AI_Input : MonoBehaviour
                 // Offset:              x is lateral, z is forward/backward
                 // Relative Velocity:   -x is forwards
 
-                // Brake if car ahead is braking
-                // Length is up to two car lengths from the front of this car. Width is 2 cars' width.
-                if (offset.z >= 3 && offset.z <= 15 && offset.x >= -2.4 && offset.x <= 2.4 && relativeVelocity.x > 0)
-                {
-                    vertical = -0.5f;
-                }
+                //// Brake if car ahead is braking
+                //// Length is up to two car lengths from the front of this car. Width is 2 cars' width.
+                //if (offset.z >= 3 && offset.z <= 15 && offset.x >= -2.4 && offset.x <= 2.4 && relativeVelocity.x > 0)
+                //{
+                //    vertical = -0.5f;
+                //}
 
                 // Lateral avoidance
                 // Length is the car's length, plus another car in front of it. Width is 4 cars' width.
@@ -203,14 +204,10 @@ public class AI_Input : MonoBehaviour
         #endregion
 
         // Crash recovery
-        if (Physics.Raycast(forRay, out hit, 12f) && hit.collider.tag == "Wall")
+        if (recover)
         {
             horizontal = horizontal * -1;
             vertical = -1f;
-        }
-        else
-        {
-            recover = false;
         }
 
         aiCar.InputResponse(vertical, horizontal);
@@ -333,7 +330,7 @@ public class AI_Input : MonoBehaviour
             Gizmos.DrawRay(this.transform.position, (-this.transform.right + transform.forward).normalized * 7.5f);
             Gizmos.DrawRay(this.transform.position, (this.transform.right + transform.forward).normalized * 7.5f);
             Gizmos.color = Color.red;
-            Gizmos.DrawRay(this.transform.position, transform.forward.normalized * 6f);
+            Gizmos.DrawRay(this.transform.position, transform.forward.normalized * 12f);
             Gizmos.DrawWireSphere(target.position, 19f);
             Gizmos.color = Color.magenta;
             Gizmos.DrawWireSphere(this.transform.position, 20f);
