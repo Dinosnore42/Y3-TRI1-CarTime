@@ -4,14 +4,24 @@ using UnityEngine;
 
 public class BulletLifetime : MonoBehaviour
 {
-    // Bullet has a 5 second lifetime
-    void Start()
+    public WeaponController creator;
+
+    // Bullet flies for 5 seconds, then is destroyed
+    private void Start()
     {
-        Destroy(this.gameObject, 5f);
+        Destroy(gameObject, 5);
     }
 
+    // If the bullet hits something, destroy it
     private void OnCollisionEnter(Collision collision)
     {
-        Destroy(this.gameObject);
+        GameObject hitObject = collision.transform.gameObject;
+
+        if (hitObject.tag == "Car")
+        {
+            creator.DealDamage(collision.transform.gameObject);
+        }
+
+        Destroy(gameObject);
     }
 }

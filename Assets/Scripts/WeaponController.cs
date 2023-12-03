@@ -82,10 +82,10 @@ public class WeaponController : MonoBehaviour
             if (weapNum == 1)
             {
                 weapon = Instantiate(Resources.Load("Gun", typeof(GameObject)) as GameObject, weaponMount);
-                ammo = 100;
+                ammo = 20;
                 firingDelay = 0.2f;
                 canRotate = true;
-                weaponDamage = 0.5f;
+                weaponDamage = 0.25f;
             }
 
             // Missile
@@ -111,6 +111,22 @@ public class WeaponController : MonoBehaviour
         }
     }
 
+    // Deals weaponDamage to a target
+    public void DealDamage(GameObject damagedTarget)
+    {
+        // Deal the damage
+        if (damagedTarget.TryGetComponent(out PlayerInput playerScript))
+        {
+            playerScript.damagePenalty += weaponDamage;
+        }
+        else
+        {
+            damagedTarget.GetComponent<AI_Input>().damagePenalty += weaponDamage;
+        }
+
+        
+    }
+
     public void FireLightningRod()
     {
         List<placingData> positions = waypointBundle.GetComponent<RacingManager>().placements;
@@ -119,15 +135,7 @@ public class WeaponController : MonoBehaviour
         {
             if (vehicle.car != this.gameObject)
             {
-                // Deal the damage
-                if (vehicle.car.TryGetComponent(out PlayerInput playerScript))
-                {
-                    playerScript.damagePenalty += weaponDamage;
-                }
-                else
-                {
-                    vehicle.car.GetComponent<AI_Input>().damagePenalty += weaponDamage;
-                }
+                DealDamage(vehicle.car);
 
                 // Bolt effect
                 GameObject bolt = Instantiate(Resources.Load("Lightning Bolt", typeof(GameObject)) as GameObject, vehicle.car.transform);
@@ -138,8 +146,14 @@ public class WeaponController : MonoBehaviour
 
     public void FireGun()
     {
+        // Create a bullet at the barrel of the gun, and give it a velocity
         GameObject bullet = Instantiate(Resources.Load("Bullet", typeof(GameObject)) as GameObject, weaponMount.GetChild(0).GetChild(0));
         bullet.GetComponent<Rigidbody>().velocity = bullet.transform.TransformDirection(Vector3.forward * 200);
+
+        // Tell the bullet it came from here so it can pass back what to damage if it hits a car
+        bullet.GetComponent<BulletLifetime>().creator = this;
+
+        // Detach from parent to stop it from moving with the gun
         bullet.transform.parent = null;
     }
 }
