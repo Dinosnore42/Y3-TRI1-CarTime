@@ -147,7 +147,7 @@ public class WeaponController : MonoBehaviour
     {
         // Create a bullet at the barrel of the gun, and give it a velocity
         GameObject bullet = Instantiate(Resources.Load("Bullet", typeof(GameObject)) as GameObject, weaponMount.GetChild(0).GetChild(0));
-        bullet.GetComponent<Rigidbody>().velocity = bullet.transform.TransformDirection(Vector3.forward * 150);
+        bullet.GetComponent<Rigidbody>().velocity = bullet.transform.TransformDirection(Vector3.forward * 100);
 
         // Tell the bullet it came from here so it can pass back what to damage if it hits a car
         bullet.GetComponent<BulletLifetime>().creator = this;

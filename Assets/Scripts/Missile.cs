@@ -37,6 +37,10 @@ public class Missile : MonoBehaviour
         // Exclude the firer's vehicle
         if (collision.gameObject != creator.gameObject)
         {
+            // Explosion effect
+            transform.GetChild(1).gameObject.SetActive(true);
+            transform.GetChild(1).transform.parent = null;
+
             GameObject hitObject = collision.transform.gameObject;
 
             if (hitObject.tag == "Car")
