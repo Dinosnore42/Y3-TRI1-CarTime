@@ -29,11 +29,11 @@ public class PlayerSetToggle : MonoBehaviour
     {
         if (value == 0)
         {
-            return "(Inactive)";
+            return "(Disabled)";
         }
         else
         {
-            return "(Active)";
+            return "(Enabled)";
         }
     }
 
