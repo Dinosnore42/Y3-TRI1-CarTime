@@ -118,21 +118,21 @@ public class CarController : MonoBehaviour
             // Find anti-lock braking
             if (PlayerPrefs.GetInt("ABS") == 0)
             {
-                automaticGears = false;
+                antiLockBraking = false;
             }
             else
             {
-                automaticGears = true;
+                antiLockBraking = true;
             }
 
             // Find traction control
             if (PlayerPrefs.GetInt("TCS") == 0)
             {
-                automaticGears = false;
+                tractionControl = false;
             }
             else
             {
-                automaticGears = true;
+                tractionControl = true;
             }
 
             #endregion
