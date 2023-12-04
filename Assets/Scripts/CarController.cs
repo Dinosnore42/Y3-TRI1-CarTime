@@ -30,9 +30,9 @@ public class CarController : MonoBehaviour
     public float totalForwardSlip; // Total forward slip of all wheels
 
     // Toggles
-    public bool automaticGears = true;
-    public bool tractionControl = true;
-    public bool antiLockBraking = true;
+    public bool automaticGears;
+    public bool tractionControl;
+    public bool antiLockBraking;
 
     public float braking;
     public bool isPlayer;
@@ -48,7 +48,16 @@ public class CarController : MonoBehaviour
 
     private void Awake()
     {
+        // Get car rigidbody
         rb = GetComponent<Rigidbody>();
+        
+        // Set all toggles to on for AI cars
+        if (!isPlayer)
+        {
+            automaticGears = true;
+            tractionControl = true;
+            antiLockBraking = true;
+        }
     }
 
     // Finds the corresponding visual wheel
@@ -71,7 +80,8 @@ public class CarController : MonoBehaviour
     }
 
     public void Update()
-    {
+    {   
+        // Player-specific interactions (gear shift, toggles)
         if (isPlayer == true)
         {
             #region Gear Shifting
@@ -94,23 +104,35 @@ public class CarController : MonoBehaviour
             #endregion
 
             #region Toggles
-
-            // Toggle automatic gears
-            if (Input.GetKeyDown("1"))
+            
+            // Find automatic gears
+            if (PlayerPrefs.GetInt("AutoGears") == 0)
             {
-                automaticGears = !automaticGears;
+                automaticGears = false;
+            }
+            else
+            {
+                automaticGears = true;
             }
 
-            // Toggle traction control
-            if (Input.GetKeyDown("2"))
+            // Find anti-lock braking
+            if (PlayerPrefs.GetInt("ABS") == 0)
             {
-                tractionControl = !tractionControl;
+                automaticGears = false;
+            }
+            else
+            {
+                automaticGears = true;
             }
 
-            // Toggle ABS
-            if (Input.GetKeyDown("3"))
+            // Find traction control
+            if (PlayerPrefs.GetInt("TCS") == 0)
             {
-                antiLockBraking = !antiLockBraking;
+                automaticGears = false;
+            }
+            else
+            {
+                automaticGears = true;
             }
 
             #endregion

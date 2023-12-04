@@ -4,5 +4,14 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Menu.unity
+    guid: 4edbce3bc14d92f44af98343e0d96c97
+  - enabled: 1
+    path: Assets/Scenes/Hills of Calernia/Hills of Calernia.unity
+    guid: d4769b71a77f33742ad7e60fbc326124
+  - enabled: 1
+    path: Assets/Scenes/Test Track/Test Track.unity
+    guid: 83760dd98fe89364daec0c8817772284
   m_configObjects: {}
