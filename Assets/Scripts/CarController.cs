@@ -23,12 +23,13 @@ public class CarController : MonoBehaviour
     public int curGear = 1;
     public float gearVal;
 
-    private Rigidbody rb;
+    private Rigidbody rb; // Car rigidbody
 
     public float totalWheelRPM; // Total RPM of drive wheels
     public float freeWheelRPM; // Total RPM of non-driving wheels
     public float totalForwardSlip; // Total forward slip of all wheels
 
+    // Toggles
     public bool automaticGears = true;
     public bool tractionControl = true;
     public bool antiLockBraking = true;
@@ -41,6 +42,9 @@ public class CarController : MonoBehaviour
     [SerializeField] private WheelCollider fr;
     [SerializeField] private WheelCollider bl;
     [SerializeField] private WheelCollider br;
+
+    // Brake lights
+    public GameObject lightBundle;
 
     private void Awake()
     {
@@ -138,6 +142,9 @@ public class CarController : MonoBehaviour
         braking = 0f;
         #endregion
 
+        // Turn brake lights off
+        lightBundle.SetActive(false);
+
         // If input direction and velocity direction match...
         if ((forwardVelocity >= 0 && vertical > 0) || (forwardVelocity <= 0 && vertical < 0))
         {
@@ -193,6 +200,7 @@ public class CarController : MonoBehaviour
         {
             // ...The car is braking
             braking = 100000; // Newton Meters
+            lightBundle.SetActive(true);
         }
         // If nothing is pressed, start to slow car (drag)
         else if (vertical == 0)
