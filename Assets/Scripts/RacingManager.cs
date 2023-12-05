@@ -64,8 +64,6 @@ public class RacingManager : MonoBehaviour
 
     private IEnumerator placementsUpdate(float updateDelay)
     {
-        yield return new WaitForSeconds(updateDelay);
-
         // Get the car placements
         #region GetData
 
@@ -107,6 +105,8 @@ public class RacingManager : MonoBehaviour
 
         // Sort car order
         placements.Sort((s1, s2) => s1.CompareTo(s2));
+
+        yield return new WaitForSeconds(updateDelay);
     }
 
     private void OnGUI()
