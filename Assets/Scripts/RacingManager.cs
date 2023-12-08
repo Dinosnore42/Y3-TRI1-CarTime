@@ -38,6 +38,7 @@ public class RacingManager : MonoBehaviour
     public List<Transform> cars;
     public List<placingData> placements;
     public GameObject pauseMenu;
+    public int numOfLapsInRace;
 
     void Start()
     {
@@ -62,6 +63,23 @@ public class RacingManager : MonoBehaviour
         {
             pauseMenu.SetActive(true);
             Time.timeScale = 0f;
+        }
+
+        // Check if everyone's finished the race
+        bool allFinished = true;
+
+        foreach (placingData contestant in placements)
+        {
+            if (contestant.lapsDone < numOfLapsInRace)
+            {
+                allFinished = false;
+            }
+        }
+
+        // If everyone has finished, end the race
+        if (allFinished == true)
+        {
+            EndRace();
         }
     }
 
@@ -121,9 +139,9 @@ public class RacingManager : MonoBehaviour
         yield return new WaitForSeconds(updateDelay);
     }
 
-    private void OnGUI()
+    public void EndRace()
     {
-        
+        Debug.Log("Race is over");
     }
 }
 
