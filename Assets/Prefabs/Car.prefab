@@ -1014,6 +1014,7 @@ MonoBehaviour:
   fr: {fileID: 3280633221940086030}
   bl: {fileID: 6756306600930871769}
   br: {fileID: 6928135429481260244}
+  lightBundle: {fileID: 0}
 --- !u!114 &6232029065109228008
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1030,6 +1031,7 @@ MonoBehaviour:
   fr: {fileID: 3280633221940086030}
   bl: {fileID: 6756306600930871769}
   br: {fileID: 6928135429481260244}
+  raceManager: {fileID: 0}
 --- !u!114 &7263152008987364474
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1082,6 +1084,9 @@ MonoBehaviour:
   waypointIndex: 0
   target: {fileID: 0}
   lapsFinished: 0
+  laptimes: []
+  currentLapLength: 0
+  timedLap: 0
   mainBooster: {fileID: 7104556839551908099}
   leftBooster: {fileID: 4821172626862803523}
   rightBooster: {fileID: 4448784557563531761}

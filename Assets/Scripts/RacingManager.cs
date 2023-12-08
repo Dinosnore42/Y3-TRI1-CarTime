@@ -10,6 +10,7 @@ public struct placingData
     public int lapsDone;
     public int currentCheckpoint;
     public float distNextCp;
+    public float penalty;
     public List<float> bankedLaptimes;
     public int CompareTo(placingData other)
     {
@@ -59,6 +60,7 @@ public class RacingManager : MonoBehaviour
 
     void Update()
     {
+        // Pause menu
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             pauseMenu.SetActive(true);
@@ -113,6 +115,7 @@ public class RacingManager : MonoBehaviour
                 thisCarData.currentCheckpoint = AI_InputScript.waypointIndex;
                 thisCarData.distNextCp = distanceToTarget;
                 thisCarData.bankedLaptimes = AI_InputScript.laptimes;
+                thisCarData.penalty = AI_InputScript.damagePenalty;
 
                 placements.Add(thisCarData);
             }
@@ -126,6 +129,7 @@ public class RacingManager : MonoBehaviour
                 thisCarData.currentCheckpoint = playerInputScript.waypointIndex;
                 thisCarData.distNextCp = distanceToTarget;
                 thisCarData.bankedLaptimes = playerInputScript.laptimes;
+                thisCarData.penalty = playerInputScript.damagePenalty;
 
                 placements.Add(thisCarData);
             }
@@ -133,7 +137,6 @@ public class RacingManager : MonoBehaviour
 
         #endregion
 
-        // Sort car order
         placements.Sort((s1, s2) => s1.CompareTo(s2));
 
         yield return new WaitForSeconds(updateDelay);
@@ -142,6 +145,21 @@ public class RacingManager : MonoBehaviour
     public void EndRace()
     {
         Debug.Log("Race is over");
+
+        //foreach (placingData contestant in placements)
+        //{
+        //    int i = 0;
+        //    float totalTime = 0;
+
+        //    while (i < numOfLapsInRace)
+        //    {
+        //        totalTime += contestant.bankedLaptimes[i];
+        //    }
+
+        //    totalTime += contestant.penalty;
+
+        //    Debug.Log(contestant.car.name + " Total Time: " + totalTime);
+        //}
     }
 }
 

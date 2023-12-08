@@ -51,7 +51,7 @@ public class WheelDebug : MonoBehaviour
         // Placements
 
         // Background box 2
-        GUI.Box(new Rect(80, 300, 300, 140), "");
+        GUI.Box(new Rect(80, 300, 400, 140), "");
 
         int i = 0;
 
@@ -59,7 +59,7 @@ public class WheelDebug : MonoBehaviour
 
         foreach (placingData entry in placements)
         {
-            GUI.Label(new Rect(85, 305 + (15 * i), 300, 30), (i + 1) + ": " + placements[i].car.name + " - Lap: " + (placements[i].lapsDone + 1) + " - Lap duration: " + placements[i].bankedLaptimes[placements[i].lapsDone]);
+            GUI.Label(new Rect(85, 305 + (15 * i), 400, 30), (i + 1) + ": " + placements[i].car.name + " - Lap: " + (placements[i].lapsDone + 1) + " - Time Penalty: " + placements[i].penalty + " - Lap Time: " + placements[i].bankedLaptimes[placements[i].lapsDone]);
             i++;
         }
     }
