@@ -11,10 +11,10 @@ public class PlayerSetToggle : MonoBehaviour
 
     private void Start()
     {
-        // Set toggles to be on by default
-        PlayerPrefs.SetInt("AutoGears", 1);
-        PlayerPrefs.SetInt("ABS", 1);
-        PlayerPrefs.SetInt("TCS", 1);
+        // Using GetInt will mean that they'll be created and be set to on if no value exists 
+        PlayerPrefs.GetInt("AutoGears", 1);
+        PlayerPrefs.GetInt("ABS", 1);
+        PlayerPrefs.GetInt("TCS", 1);
     }
 
     private void Update()
