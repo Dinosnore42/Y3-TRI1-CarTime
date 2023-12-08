@@ -9,14 +9,6 @@ public class PlayerSetToggle : MonoBehaviour
     public TextMeshProUGUI tog_ABS_But;
     public TextMeshProUGUI tog_TCS_But;
 
-    private void Start()
-    {
-        // Using GetInt will mean that they'll be created and be set to on if no value exists 
-        PlayerPrefs.GetInt("AutoGears", 1);
-        PlayerPrefs.GetInt("ABS", 1);
-        PlayerPrefs.GetInt("TCS", 1);
-    }
-
     private void Update()
     {
         // Displayed text in settings menu
