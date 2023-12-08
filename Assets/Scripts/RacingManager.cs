@@ -147,11 +147,11 @@ public class RacingManager : MonoBehaviour
     {
         calledEnd = true;
 
-        int i = 0;
-        float combinedTime = 0;
-
         foreach (placingData contestants in placements)
         {
+            int i = 0;
+            float combinedTime = 0;
+
             // Add up the time the car took for each lap
             while (i < numOfLapsInRace)
             {
