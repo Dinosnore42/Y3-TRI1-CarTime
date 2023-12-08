@@ -116,14 +116,18 @@ public class WeaponController : MonoBehaviour
         // Deal the damage
         if (damagedTarget.TryGetComponent(out PlayerInput playerScript))
         {
-            playerScript.damagePenalty += weaponDamage;
+            if (!playerScript.invincible)
+            {
+                playerScript.damagePenalty += weaponDamage;
+            }
         }
-        else
+        else if (damagedTarget.TryGetComponent(out AI_Input aiScript))
         {
-            damagedTarget.GetComponent<AI_Input>().damagePenalty += weaponDamage;
+            if (!aiScript.invincible)
+            {
+                aiScript.damagePenalty += weaponDamage;
+            }
         }
-
-        
     }
 
     public void FireLightningRod()

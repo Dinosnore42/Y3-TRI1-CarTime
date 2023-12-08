@@ -22,6 +22,7 @@ public class PlayerInput : MonoBehaviour
     private GameObject aimTarget;
     private bool aimDirectionFront = true;
     public float damagePenalty;
+    public bool invincible = false;
 
     // Start is called before the first frame update
     void Start()
@@ -52,6 +53,11 @@ public class PlayerInput : MonoBehaviour
         // Track time it takes to do a lap
         currentLapLength += Time.deltaTime;
         laptimes[timedLap] = currentLapLength;
+
+        if (lapsFinished >= waypointBundle.GetComponent<RacingManager>().numOfLapsInRace)
+        {
+            invincible = true;
+        }
     }
 
     // Update is called once per frame
