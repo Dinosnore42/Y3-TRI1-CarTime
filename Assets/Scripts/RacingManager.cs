@@ -38,6 +38,7 @@ public class RacingManager : MonoBehaviour
     public List<placingData> placements;
     public int laps;
     public int lapsCompleted;
+    public GameObject pauseMenu;
 
     void Start()
     {
@@ -53,6 +54,15 @@ public class RacingManager : MonoBehaviour
         foreach (Transform car in carsBundle.transform)
         {
             cars.Add(car);
+        }
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            pauseMenu.SetActive(true);
+            Time.timeScale = 0f;
         }
     }
 
