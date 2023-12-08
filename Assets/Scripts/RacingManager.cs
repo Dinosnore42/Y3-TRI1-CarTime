@@ -12,7 +12,7 @@ public struct placingData
     public float distNextCp;
     public float penalty;
     public List<float> bankedLaptimes;
-    public int CompareTo(placingData other)
+    public int RaceCompareTo(placingData other)
     {
         int result = lapsDone.CompareTo(other.lapsDone);
 
@@ -40,6 +40,7 @@ public class RacingManager : MonoBehaviour
     public List<placingData> placements;
     public GameObject pauseMenu;
     public int numOfLapsInRace;
+    public bool calledEnd = false;
 
     void Start()
     {
@@ -79,7 +80,7 @@ public class RacingManager : MonoBehaviour
         }
 
         // If everyone has finished, end the race
-        if (allFinished == true)
+        if (allFinished == true && calledEnd == false)
         {
             EndRace();
         }
@@ -137,29 +138,32 @@ public class RacingManager : MonoBehaviour
 
         #endregion
 
-        placements.Sort((s1, s2) => s1.CompareTo(s2));
+        placements.Sort((s1, s2) => s1.RaceCompareTo(s2));
 
         yield return new WaitForSeconds(updateDelay);
     }
 
     public void EndRace()
     {
-        Debug.Log("Race is over");
+        calledEnd = true;
 
-        //foreach (placingData contestant in placements)
-        //{
-        //    int i = 0;
-        //    float totalTime = 0;
+        int i = 0;
+        float combinedTime = 0;
 
-        //    while (i < numOfLapsInRace)
-        //    {
-        //        totalTime += contestant.bankedLaptimes[i];
-        //    }
+        foreach (placingData contestants in placements)
+        {
+            // Add up the time the car took for each lap
+            while (i < numOfLapsInRace)
+            {
+                combinedTime += contestants.bankedLaptimes[i];
+                i++;
+            }
 
-        //    totalTime += contestant.penalty;
+            // Apply the penalty
+            combinedTime += contestants.penalty;
 
-        //    Debug.Log(contestant.car.name + " Total Time: " + totalTime);
-        //}
+            Debug.Log(contestants.car.name + " " + combinedTime);
+        }
     }
 }
 
