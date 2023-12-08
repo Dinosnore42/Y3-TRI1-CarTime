@@ -13,6 +13,9 @@ public class PlayerInput : MonoBehaviour
     public int waypointIndex;
     public Transform target;
     public int lapsFinished = 0;
+    public List<float> laptimes = new List<float>();
+    public float currentLapLength = 0;
+    public int timedLap = 0;
     public GameObject mainBooster;
     public GameObject leftBooster;
     public GameObject rightBooster;
@@ -32,7 +35,23 @@ public class PlayerInput : MonoBehaviour
             waypoints.Add(child);
         }
 
+        laptimes.Add(0);
         UpdateDestination();
+    }
+
+    private void Update()
+    {
+        // When lap ends, move to the next lap
+        if (lapsFinished > timedLap)
+        {
+            timedLap++;
+            currentLapLength = 0;
+            laptimes.Add(0);
+        }
+
+        // Track time it takes to do a lap
+        currentLapLength += Time.deltaTime;
+        laptimes[timedLap] = currentLapLength;
     }
 
     // Update is called once per frame

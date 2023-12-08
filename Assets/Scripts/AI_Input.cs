@@ -25,6 +25,9 @@ public class AI_Input : MonoBehaviour
     public float targetVelocity;
     public bool recover;
     public int lapsFinished = 0;
+    public List<float> laptimes = new List<float>();
+    public float currentLapLength = 0;
+    public int timedLap = 0;
     public GameObject mainBooster;
     public GameObject leftBooster;
     public GameObject rightBooster;
@@ -45,10 +48,25 @@ public class AI_Input : MonoBehaviour
             waypoints.Add(child);
         }
 
+        laptimes.Add(0);
         UpdateDestination();
     }
 
-    // Update is called once per frame
+    private void Update()
+    {
+        // When lap ends, move to the next lap
+        if (lapsFinished > timedLap)
+        {
+            timedLap++;
+            currentLapLength = 0;
+            laptimes.Add(0);
+        }
+
+        // Track time it takes to do a lap
+        currentLapLength += Time.deltaTime;
+        laptimes[timedLap] = currentLapLength;
+    }
+
     void FixedUpdate()
     {
         #region Driving

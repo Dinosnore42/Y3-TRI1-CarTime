@@ -10,6 +10,7 @@ public struct placingData
     public int lapsDone;
     public int currentCheckpoint;
     public float distNextCp;
+    public List<float> bankedLaptimes;
     public int CompareTo(placingData other)
     {
         int result = lapsDone.CompareTo(other.lapsDone);
@@ -36,8 +37,6 @@ public class RacingManager : MonoBehaviour
     public GameObject carsBundle;
     public List<Transform> cars;
     public List<placingData> placements;
-    public int laps;
-    public int lapsCompleted;
     public GameObject pauseMenu;
 
     void Start()
@@ -94,6 +93,7 @@ public class RacingManager : MonoBehaviour
                 thisCarData.lapsDone = AI_InputScript.lapsFinished;
                 thisCarData.currentCheckpoint = AI_InputScript.waypointIndex;
                 thisCarData.distNextCp = distanceToTarget;
+                thisCarData.bankedLaptimes = AI_InputScript.laptimes;
 
                 placements.Add(thisCarData);
             }
@@ -106,6 +106,7 @@ public class RacingManager : MonoBehaviour
                 thisCarData.lapsDone = playerInputScript.lapsFinished;
                 thisCarData.currentCheckpoint = playerInputScript.waypointIndex;
                 thisCarData.distNextCp = distanceToTarget;
+                thisCarData.bankedLaptimes = playerInputScript.laptimes;
 
                 placements.Add(thisCarData);
             }
@@ -128,7 +129,7 @@ public class RacingManager : MonoBehaviour
 
         foreach(placingData entry in placements)
         {
-            GUI.Label(new Rect(85, 305 + (15 * i), 300, 30), (i + 1) + ": " + placements[i].car.name + " - Lap: " + (placements[i].lapsDone + 1));
+            GUI.Label(new Rect(85, 305 + (15 * i), 300, 30), (i + 1) + ": " + placements[i].car.name + " - Lap: " + (placements[i].lapsDone + 1) + " - Lap duration: " + placements[i].bankedLaptimes[placements[i].lapsDone]);
             i++;
         }
     }
