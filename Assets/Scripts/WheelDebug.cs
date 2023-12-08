@@ -11,6 +11,7 @@ public class WheelDebug : MonoBehaviour
 
     private CarController thisCar;
     private Rigidbody thisRb;
+    public GameObject raceManager;
 
     private void Awake()
     {
@@ -20,7 +21,9 @@ public class WheelDebug : MonoBehaviour
 
     private void OnGUI()
     {
-        // Background box
+        // Player car info
+
+        // Background box 1
         GUI.Box(new Rect(80, 0, 300, 285), "");
 
         // Wheel data
@@ -45,31 +48,19 @@ public class WheelDebug : MonoBehaviour
             GUI.Label(new Rect(150, 85, 200, 50), ("ANTI-LOCK BRAKING ON"));
         }
 
-        if (thisCar.automaticGears)
-        {
-            GUI.Label(new Rect(90, 230, 200, 50), ("1: turn off automatic gears"));
-        }
-        else
-        {
-            GUI.Label(new Rect(90, 230, 200, 50), ("1: turn on automatic gears"));
-        }
+        // Placements
 
-        if (thisCar.tractionControl)
-        {
-            GUI.Label(new Rect(90, 245, 200, 50), ("2: turn off traction control"));
-        }
-        else
-        {
-            GUI.Label(new Rect(90, 245, 200, 50), ("2: turn on traction control"));
-        }
+        // Background box 2
+        GUI.Box(new Rect(80, 300, 300, 140), "");
 
-        if (thisCar.antiLockBraking)
+        int i = 0;
+
+        List<placingData> placements = raceManager.GetComponent<RacingManager>().placements;
+
+        foreach (placingData entry in placements)
         {
-            GUI.Label(new Rect(90, 260, 200, 50), ("3: turn off anti-lock braking"));
-        }
-        else
-        {
-            GUI.Label(new Rect(90, 260, 200, 50), ("3: turn on anti-lock braking"));
+            GUI.Label(new Rect(85, 305 + (15 * i), 300, 30), (i + 1) + ": " + placements[i].car.name + " - Lap: " + (placements[i].lapsDone + 1) + " - Lap duration: " + placements[i].bankedLaptimes[placements[i].lapsDone]);
+            i++;
         }
     }
 

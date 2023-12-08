@@ -71,6 +71,7 @@ public class RacingManager : MonoBehaviour
         StartCoroutine(placementsUpdate(0.5f));
     }
 
+    // Update the placements of each car
     private IEnumerator placementsUpdate(float updateDelay)
     {
         // Get the car placements
@@ -122,16 +123,7 @@ public class RacingManager : MonoBehaviour
 
     private void OnGUI()
     {
-        // Background box
-        GUI.Box(new Rect(80, 300, 300, 140), "");
-
-        int i = 0;
-
-        foreach(placingData entry in placements)
-        {
-            GUI.Label(new Rect(85, 305 + (15 * i), 300, 30), (i + 1) + ": " + placements[i].car.name + " - Lap: " + (placements[i].lapsDone + 1) + " - Lap duration: " + placements[i].bankedLaptimes[placements[i].lapsDone]);
-            i++;
-        }
+        
     }
 }
 
