@@ -32,6 +32,11 @@ public struct placingData
 
         return distNextCp.CompareTo(other.distNextCp);
     }
+
+    public int EndCompareTo(placingData other)
+    {
+        return combinedTime.CompareTo(other.combinedTime);
+    }
 }
 
 public class RacingManager : MonoBehaviour

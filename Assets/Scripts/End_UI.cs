@@ -15,7 +15,8 @@ public class End_UI : MonoBehaviour
         finalPlacements = raceManager.GetComponent<RacingManager>().placements;
         float templateHeight = 40f;
 
-        // Make list of final placements
+        // Order list of final placements based on end combined time
+        finalPlacements.Sort((s1, s2) => s1.EndCompareTo(s2));
 
 
 
@@ -39,12 +40,7 @@ public class End_UI : MonoBehaviour
 
             newEntry.Find("Time").GetComponent<TextMeshProUGUI>().text = totalTime.ToString();
             newEntry.Find("Penalty").GetComponent<TextMeshProUGUI>().text = finalPlacements[i].penalty.ToString();
-
-
-
-
-
-            //newEntry.Find("Final Position").GetComponent<TextMeshProUGUI>().text = finalPlacements[i];
+            newEntry.Find("Final Position").GetComponent<TextMeshProUGUI>().text = i + " - " + (totalTime + finalPlacements[i].penalty).ToString();
         }
     }
 }
