@@ -12,6 +12,7 @@ public struct placingData
     public float distNextCp;
     public float penalty;
     public List<float> bankedLaptimes;
+    public float combinedTime;
     public int RaceCompareTo(placingData other)
     {
         int result = lapsDone.CompareTo(other.lapsDone);
@@ -41,6 +42,7 @@ public class RacingManager : MonoBehaviour
     public GameObject pauseMenu;
     public int numOfLapsInRace;
     public bool calledEnd = false;
+    public float updateTimer = 0;
 
     void Start()
     {
@@ -67,110 +69,107 @@ public class RacingManager : MonoBehaviour
             pauseMenu.SetActive(true);
             Time.timeScale = 0f;
         }
-
-        // Check if everyone's finished the race
-        bool allFinished = true;
-
-        foreach (placingData contestant in placements)
-        {
-            if (contestant.lapsDone < numOfLapsInRace)
-            {
-                allFinished = false;
-            }
-        }
-
-        // If everyone has finished, end the race
-        if (allFinished == true && calledEnd == false)
-        {
-            EndRace();
-        }
     }
 
     void FixedUpdate()
     {
         // Better for memory if getting the data and sorting it happens every half-second.
-        StartCoroutine(placementsUpdate(0.5f));
-    }
-
-    // Update the placements of each car
-    private IEnumerator placementsUpdate(float updateDelay)
-    {
-        // Get the car placements
-        #region GetData
-
-        placements.Clear();
-
-        // For each car, get their target waypoint and find the distance between them and it.
-        foreach (Transform car in cars)
+        // Update placements until the race is over
+        if (calledEnd == false && updateTimer >= 0.5)
         {
-            placingData thisCarData;
-            thisCarData.car = car.gameObject;
+            // Get the car placements
+            #region GetData
 
-            // If the car is an AI...
-            if (car.TryGetComponent<AI_Input>(out AI_Input AI_InputScript))
+            placements.Clear();
+
+            // For each car, get their target waypoint and find the distance between them and it.
+            foreach (Transform car in cars)
             {
-                Transform target = checkpoints[AI_InputScript.waypointIndex];
-                float distanceToTarget = Vector3.Distance(car.transform.position, target.position);
+                placingData thisCarData;
+                thisCarData.car = car.gameObject;
 
-                thisCarData.lapsDone = AI_InputScript.lapsFinished;
-                thisCarData.currentCheckpoint = AI_InputScript.waypointIndex;
-                thisCarData.distNextCp = distanceToTarget;
-                thisCarData.bankedLaptimes = AI_InputScript.laptimes;
-                thisCarData.penalty = AI_InputScript.damagePenalty;
+                // If the car is an AI...
+                if (car.TryGetComponent<AI_Input>(out AI_Input AI_InputScript))
+                {
+                    Transform target = checkpoints[AI_InputScript.waypointIndex];
+                    float distanceToTarget = Vector3.Distance(car.transform.position, target.position);
 
-                placements.Add(thisCarData);
+                    thisCarData.lapsDone = AI_InputScript.lapsFinished;
+                    thisCarData.currentCheckpoint = AI_InputScript.waypointIndex;
+                    thisCarData.distNextCp = distanceToTarget;
+                    thisCarData.bankedLaptimes = AI_InputScript.laptimes;
+                    thisCarData.penalty = AI_InputScript.damagePenalty;
+
+                    int i = 0;
+                    float totalTime = 0;
+
+                    // Add up the time the car took for each lap
+                    while (i < numOfLapsInRace)
+                    {
+                        totalTime += AI_InputScript.laptimes[i];
+                        i++;
+                    }
+
+                    // Apply the penalty
+                    thisCarData.combinedTime = totalTime += thisCarData.penalty;
+
+                    placements.Add(thisCarData);
+                }
+                // ...or if it's a player.
+                else if (car.TryGetComponent<PlayerInput>(out PlayerInput playerInputScript))
+                {
+                    Transform target = checkpoints[playerInputScript.waypointIndex];
+                    float distanceToTarget = Vector3.Distance(car.transform.position, target.position);
+
+                    thisCarData.lapsDone = playerInputScript.lapsFinished;
+                    thisCarData.currentCheckpoint = playerInputScript.waypointIndex;
+                    thisCarData.distNextCp = distanceToTarget;
+                    thisCarData.bankedLaptimes = playerInputScript.laptimes;
+                    thisCarData.penalty = playerInputScript.damagePenalty;
+
+                    int i = 0;
+                    float totalTime = 0;
+
+                    // Add up the time the car took for each lap
+                    while (i < numOfLapsInRace)
+                    {
+                        totalTime += playerInputScript.laptimes[i];
+                        i++;
+                    }
+
+                    // Apply the penalty
+                    thisCarData.combinedTime = totalTime += thisCarData.penalty;
+
+                    placements.Add(thisCarData);
+                }
             }
-            // ...or if it's a player.
-            else if (car.TryGetComponent<PlayerInput>(out PlayerInput playerInputScript))
+
+            #endregion
+
+            // Sort the list of placings
+            placements.Sort((s1, s2) => s1.RaceCompareTo(s2));
+
+            // Check if everyone's finished the race
+            bool allFinished = true;
+
+            foreach (placingData contestant in placements)
             {
-                Transform target = checkpoints[playerInputScript.waypointIndex];
-                float distanceToTarget = Vector3.Distance(car.transform.position, target.position);
-
-                thisCarData.lapsDone = playerInputScript.lapsFinished;
-                thisCarData.currentCheckpoint = playerInputScript.waypointIndex;
-                thisCarData.distNextCp = distanceToTarget;
-                thisCarData.bankedLaptimes = playerInputScript.laptimes;
-                thisCarData.penalty = playerInputScript.damagePenalty;
-
-                placements.Add(thisCarData);
+                if (contestant.lapsDone < numOfLapsInRace)
+                {
+                    allFinished = false;
+                }
             }
+
+            // If everyone has finished, end the race
+            if (allFinished == true && calledEnd == false)
+            {
+                calledEnd = true;
+            }
+
+            updateTimer = 0;
         }
 
-        #endregion
-
-        placements.Sort((s1, s2) => s1.RaceCompareTo(s2));
-
-        yield return new WaitForSeconds(updateDelay);
-    }
-
-    public void EndRace()
-    {
-        calledEnd = true;
-
-
-
-
-
-
-
-
-        foreach (placingData contestants in placements)
-        {
-            int i = 0;
-            float combinedTime = 0;
-
-            // Add up the time the car took for each lap
-            while (i < numOfLapsInRace)
-            {
-                combinedTime += contestants.bankedLaptimes[i];
-                i++;
-            }
-
-            // Apply the penalty
-            combinedTime += contestants.penalty;
-
-            Debug.Log(contestants.car.name + " " + combinedTime);
-        }
+        updateTimer += Time.deltaTime;
     }
 }
 

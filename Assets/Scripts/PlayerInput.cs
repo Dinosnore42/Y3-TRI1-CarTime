@@ -128,11 +128,11 @@ public class PlayerInput : MonoBehaviour
         #region Acquire target
 
         // Choose target direction
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetKey(KeyCode.UpArrow))
         {
             aimDirectionFront = true;
         }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        else if (Input.GetKey(KeyCode.DownArrow))
         {
             aimDirectionFront = false;
         }
