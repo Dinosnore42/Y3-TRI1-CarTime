@@ -20,7 +20,6 @@ public class End_UI : MonoBehaviour
         finalPlacements.Sort((s1, s2) => s1.EndCompareTo(s2));
 
 
-
         for (int i = 0; i < finalPlacements.Count; i++)
         {
             Transform newEntry = Instantiate(template, transform);

@@ -172,7 +172,7 @@ public class RacingManager : MonoBehaviour
                 calledEnd = true;
             }
 
-            updateTimer = 0;
+            updateTimer = 0f;
         }
 
         updateTimer += Time.deltaTime;
