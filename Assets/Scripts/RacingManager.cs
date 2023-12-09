@@ -106,14 +106,11 @@ public class RacingManager : MonoBehaviour
                     thisCarData.bankedLaptimes = AI_InputScript.laptimes;
                     thisCarData.penalty = AI_InputScript.damagePenalty;
 
-                    int i = 0;
                     float totalTime = 0;
 
-                    // Add up the time the car took for each lap
-                    while (i < numOfLapsInRace)
+                    for (int i = 0; i < AI_InputScript.lapsFinished; i++)
                     {
                         totalTime += AI_InputScript.laptimes[i];
-                        i++;
                     }
 
                     // Apply the penalty
@@ -133,14 +130,11 @@ public class RacingManager : MonoBehaviour
                     thisCarData.bankedLaptimes = playerInputScript.laptimes;
                     thisCarData.penalty = playerInputScript.damagePenalty;
 
-                    int i = 0;
                     float totalTime = 0;
 
-                    // Add up the time the car took for each lap
-                    while (i < numOfLapsInRace)
+                    for (int i = 0; i < playerInputScript.lapsFinished; i++)
                     {
-                        totalTime += playerInputScript.laptimes[i];
-                        i++;
+                        totalTime += AI_InputScript.laptimes[i];
                     }
 
                     // Apply the penalty

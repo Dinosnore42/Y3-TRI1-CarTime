@@ -17,7 +17,7 @@ public class End_UI : MonoBehaviour
         float templateHeight = 35f;
 
         // Order list of final placements based on end combined time
-        finalPlacements.Sort((s1, s2) => s1.EndCompareTo(s2));
+        //finalPlacements.Sort((s1, s2) => s1.EndCompareTo(s2));
 
 
         for (int i = 0; i < finalPlacements.Count; i++)
