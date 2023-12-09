@@ -147,6 +147,13 @@ public class RacingManager : MonoBehaviour
     {
         calledEnd = true;
 
+
+
+
+
+
+
+
         foreach (placingData contestants in placements)
         {
             int i = 0;
