@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class End_UI : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class End_UI : MonoBehaviour
     void Start()
     {
         finalPlacements = raceManager.GetComponent<RacingManager>().placements;
-        float templateHeight = 40f;
+        float templateHeight = 35f;
 
         // Order list of final placements based on end combined time
         finalPlacements.Sort((s1, s2) => s1.EndCompareTo(s2));
@@ -42,5 +43,10 @@ public class End_UI : MonoBehaviour
             newEntry.Find("Penalty").GetComponent<TextMeshProUGUI>().text = finalPlacements[i].penalty.ToString();
             newEntry.Find("Final Position").GetComponent<TextMeshProUGUI>().text = i + " - " + (totalTime + finalPlacements[i].penalty).ToString();
         }
+    }
+
+    public void ReturnToMenu()
+    {
+        SceneManager.LoadScene(0);
     }
 }
