@@ -84,7 +84,7 @@ public class WeaponController : MonoBehaviour
                 ammo = 20;
                 firingDelay = 0.2f;
                 canRotate = true;
-                weaponDamage = 0.2f;
+                weaponDamage = 0.3f;
             }
 
             // Missile
@@ -94,7 +94,7 @@ public class WeaponController : MonoBehaviour
                 ammo = 4;
                 firingDelay = 0.5f;
                 canRotate = true;
-                weaponDamage = 1f;
+                weaponDamage = 0.8f;
             }
 
             // Lightning Rod
@@ -105,7 +105,7 @@ public class WeaponController : MonoBehaviour
                 firingDelay = 0.1f;
                 canRotate = false;
                 weapon.transform.localEulerAngles = new Vector3(0f, -90f, 45f);
-                weaponDamage = 8f;
+                weaponDamage = 4f;
             }
         }
     }

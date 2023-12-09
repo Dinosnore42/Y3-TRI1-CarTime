@@ -40,7 +40,7 @@ public class End_UI : MonoBehaviour
 
             newEntry.Find("Time").GetComponent<TextMeshProUGUI>().text = totalTime.ToString();
             newEntry.Find("Penalty").GetComponent<TextMeshProUGUI>().text = finalPlacements[i].penalty.ToString();
-            newEntry.Find("Final Position").GetComponent<TextMeshProUGUI>().text = i + " - " + (totalTime + finalPlacements[i].penalty).ToString();
+            newEntry.Find("Final Position").GetComponent<TextMeshProUGUI>().text = (i + 1) + " - " + (totalTime + finalPlacements[i].penalty).ToString();
         }
     }
 
