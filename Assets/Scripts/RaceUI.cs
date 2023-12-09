@@ -78,7 +78,7 @@ public class RaceUI : MonoBehaviour
             }
             else
             {
-                currentWeap = "Nothing";
+                currentWeap = "No Weapon";
             }
 
             #endregion

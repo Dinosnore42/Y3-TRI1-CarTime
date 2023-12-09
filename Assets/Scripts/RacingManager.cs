@@ -134,7 +134,7 @@ public class RacingManager : MonoBehaviour
 
                     for (int i = 0; i < playerInputScript.lapsFinished; i++)
                     {
-                        totalTime += AI_InputScript.laptimes[i];
+                        totalTime += playerInputScript.laptimes[i];
                     }
 
                     // Apply the penalty
