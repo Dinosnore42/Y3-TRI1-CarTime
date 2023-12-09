@@ -134,7 +134,7 @@ public class AI_Input : MonoBehaviour
         // If this is the car at the front, travel slower, allowing the rest of the pack to catch up
         if (gameObject == waypointBundle.GetComponent<RacingManager>().placements[0].car)
         {
-            targetVelocity -= 4;
+            targetVelocity -= 10;
         }
 
         // If the car has hit a wall, reverse

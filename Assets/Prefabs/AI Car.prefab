@@ -256,11 +256,11 @@ WheelCollider:
     m_AsymptoteValue: 0.5
     m_Stiffness: 1
   m_SidewaysFriction:
-    m_ExtremumSlip: 0.1
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.5
-    m_Stiffness: 1
+    m_ExtremumSlip: 0.3
+    m_ExtremumValue: 0.6
+    m_AsymptoteSlip: 1
+    m_AsymptoteValue: 0.8
+    m_Stiffness: 1.5
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -541,11 +541,11 @@ WheelCollider:
     m_AsymptoteValue: 0.5
     m_Stiffness: 1
   m_SidewaysFriction:
-    m_ExtremumSlip: 0.1
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.5
-    m_Stiffness: 1
+    m_ExtremumSlip: 0.3
+    m_ExtremumValue: 0.6
+    m_AsymptoteSlip: 1
+    m_AsymptoteValue: 0.8
+    m_Stiffness: 1.5
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1292,11 +1292,11 @@ WheelCollider:
     m_AsymptoteValue: 0.5
     m_Stiffness: 1
   m_SidewaysFriction:
-    m_ExtremumSlip: 0.1
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.5
-    m_Stiffness: 1
+    m_ExtremumSlip: 0.3
+    m_ExtremumValue: 0.6
+    m_AsymptoteSlip: 1
+    m_AsymptoteValue: 0.8
+    m_Stiffness: 1.5
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1632,11 +1632,11 @@ WheelCollider:
     m_AsymptoteValue: 0.5
     m_Stiffness: 1
   m_SidewaysFriction:
-    m_ExtremumSlip: 0.1
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.5
-    m_Stiffness: 1
+    m_ExtremumSlip: 0.3
+    m_ExtremumValue: 0.6
+    m_AsymptoteSlip: 1
+    m_AsymptoteValue: 0.8
+    m_Stiffness: 1.5
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1805,6 +1805,7 @@ MonoBehaviour:
   fr: {fileID: 8014546271645718666}
   bl: {fileID: 3111682266730686655}
   br: {fileID: 4485713820917558137}
+  lightBundle: {fileID: 0}
 --- !u!114 &7566867561744146859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1826,10 +1827,14 @@ MonoBehaviour:
   targetVelocity: 0
   recover: 0
   lapsFinished: 0
+  laptimes: []
+  currentLapLength: 0
+  timedLap: 0
   mainBooster: {fileID: 2950161321175771321}
   leftBooster: {fileID: 4833361772166271654}
   rightBooster: {fileID: 8976005669690335810}
   damagePenalty: 0
+  invincible: 0
 --- !u!114 &6979289692643463498
 MonoBehaviour:
   m_ObjectHideFlags: 0
