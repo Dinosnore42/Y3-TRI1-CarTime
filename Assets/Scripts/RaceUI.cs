@@ -11,6 +11,7 @@ public class RaceUI : MonoBehaviour
     public PlayerInput playerInput;
     public CarController playerCarController;
     public GameObject raceManager;
+    public GameObject endUI;
 
     // Output
     public TextMeshProUGUI carSpeed;
@@ -34,6 +35,7 @@ public class RaceUI : MonoBehaviour
     {
         if (raceManager.GetComponent<RacingManager>().calledEnd)
         {
+            endUI.SetActive(true);
             gameObject.SetActive(false);
         }
         else

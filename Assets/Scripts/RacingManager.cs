@@ -13,6 +13,7 @@ public struct placingData
     public float penalty;
     public List<float> bankedLaptimes;
     public float combinedTime;
+
     public int RaceCompareTo(placingData other)
     {
         int result = lapsDone.CompareTo(other.lapsDone);
