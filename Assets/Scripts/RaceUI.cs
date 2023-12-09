@@ -32,78 +32,83 @@ public class RaceUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        #region Speed
-
-        float speed = (int)Mathf.Round(playerCar.GetComponent<Rigidbody>().velocity.magnitude * 2.237f);
-        float reccomendedSpeed = playerInput.target.transform.localScale.x;
-
-        // Show if player is above reccomended speed
-        if (reccomendedSpeed - speed < 0)
+        if (raceManager.GetComponent<RacingManager>().calledEnd)
         {
-            carSpeed.color = Color.red;
+            gameObject.SetActive(false);
         }
         else
         {
-            carSpeed.color = Color.green;
-        }
+            #region Speed
 
-        #endregion
+            float speed = (int)Mathf.Round(playerCar.GetComponent<Rigidbody>().velocity.magnitude * 2.237f);
+            float reccomendedSpeed = playerInput.target.transform.localScale.x;
 
-        #region Weapon
-
-        string currentWeap = "";
-
-        if (playerWeaponController.hasWeapon == true)
-        {
-            if (playerWeaponController.weapNum == 1)
+            // Show if player is above reccomended speed
+            if (reccomendedSpeed - speed < 0)
             {
-                currentWeap = "Gun Turret";
+                carSpeed.color = Color.red;
             }
-            else if (playerWeaponController.weapNum == 2)
+            else
             {
-                currentWeap = "Rocket Launcher";
+                carSpeed.color = Color.green;
             }
-            else if (playerWeaponController.weapNum == 3)
+
+            #endregion
+
+            #region Weapon
+
+            string currentWeap = "";
+
+            if (playerWeaponController.hasWeapon == true)
             {
-                currentWeap = "Lightning Rod";
+                if (playerWeaponController.weapNum == 1)
+                {
+                    currentWeap = "Gun Turret";
+                }
+                else if (playerWeaponController.weapNum == 2)
+                {
+                    currentWeap = "Rocket Launcher";
+                }
+                else if (playerWeaponController.weapNum == 3)
+                {
+                    currentWeap = "Lightning Rod";
+                }
             }
-        }
-        else
-        {
-            currentWeap = "Nothing";
-        }
-
-        #endregion
-
-        #region Positioning
-
-        int i = 0;
-        int carPosition = 0;
-        float carPenalisation = 0f;
-        List<placingData> positions = new List<placingData>(raceManager.GetComponent<RacingManager>().placements);
-
-        foreach (placingData vehicle in positions)
-        {
-            i++;
-
-            if (vehicle.car == playerCar)
+            else
             {
-                carPosition = i;
-                carPenalisation = vehicle.penalty;
+                currentWeap = "Nothing";
             }
+
+            #endregion
+
+            #region Positioning
+
+            int i = 0;
+            int carPosition = 0;
+            float carPenalisation = 0f;
+            List<placingData> positions = new List<placingData>(raceManager.GetComponent<RacingManager>().placements);
+
+            foreach (placingData vehicle in positions)
+            {
+                i++;
+
+                if (vehicle.car == playerCar)
+                {
+                    carPosition = i;
+                    carPenalisation = vehicle.penalty;
+                }
+            }
+
+            #endregion
+
+            // Set text
+            carSpeed.text = speed.ToString() + "mph / " + reccomendedSpeed.ToString() + "mph";
+            carGear.text = playerCarController.curGear.ToString();
+            carLap.text = (playerInput.lapsFinished + 1) + " / " + raceManager.GetComponent<RacingManager>().numOfLapsInRace;
+            carWeapon.text = currentWeap;
+            carAmmo.text = "Ammo: " + playerWeaponController.ammo.ToString();
+            carPlace.text = "Position: " + carPosition + " / 8";
+            carPenalty.text = "Penalty: " + carPenalisation + "s";
         }
-
-        #endregion
-
-
-        // Set text
-        carSpeed.text = speed.ToString() + "mph / " + reccomendedSpeed.ToString() + "mph";
-        carGear.text = playerCarController.curGear.ToString();
-        carLap.text = (playerInput.lapsFinished + 1) + " / " + raceManager.GetComponent<RacingManager>().numOfLapsInRace;
-        carWeapon.text = currentWeap;
-        carAmmo.text = "Ammo: " + playerWeaponController.ammo.ToString();
-        carPlace.text = "Position: " + carPosition + " / 8";
-
-        carPenalty.text = "Penalty: " + carPenalisation + "s";
     }
 }
