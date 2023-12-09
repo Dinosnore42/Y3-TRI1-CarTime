@@ -102,12 +102,7 @@ public class RaceUI : MonoBehaviour
         carLap.text = (playerInput.lapsFinished + 1) + " / " + raceManager.GetComponent<RacingManager>().numOfLapsInRace;
         carWeapon.text = currentWeap;
         carAmmo.text = "Ammo: " + playerWeaponController.ammo.ToString();
-
-        // Only make position update if the player is still racing
-        if (playerInput.lapsFinished + 1 >= raceManager.GetComponent<RacingManager>().numOfLapsInRace)
-        {
-            carPlace.text = "Position: " + carPosition + " / 8";
-        }
+        carPlace.text = "Position: " + carPosition + " / 8";
 
         carPenalty.text = "Penalty: " + carPenalisation + "s";
     }

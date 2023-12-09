@@ -161,7 +161,7 @@ public class RacingManager : MonoBehaviour
             }
 
             // If everyone has finished, end the race
-            if (allFinished == true && calledEnd == false)
+            if (allFinished == true)
             {
                 calledEnd = true;
             }
